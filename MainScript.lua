@@ -1,9 +1,8 @@
 --// Art's Hub modules //--
-local Utility = loadstring(game:GetService('HttpService'):GetAsync(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Utility.lua"),true))()
+local Utility = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Utility.lua"),true))()
 
 print( "Art's Hub Debug: | Modules Loaded" )
 print( 'UTILITY , ' .. unpack(Utility))
-
 local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
 local Linoria = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
@@ -11,7 +10,6 @@ local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))
 
 local Places = {
     0000000, --// Park
-
 
 }
 
