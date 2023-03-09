@@ -26,7 +26,7 @@ function ArtsHub:LoadUI()
     })
 
     --// Load Tabs //--
-    print( 'Loading tabs' )
+    print( 'Loading tabs' , self.Window )
     self.MainTab = self.Window:AddTab( 'Main' ) 
     self.Settings = self.Window:AddTab( 'Settings' )
 end
