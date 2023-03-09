@@ -87,10 +87,6 @@ function ArtsHub:Update()
 
 end
 
-if getgenv().ArtsHub then
-    getgenv().ArtsHub:Unload()
-    getgenv().ArtsHub = nil 
-end 
 getgenv().ArtsHub = ArtsHub.new( 'iArtisticDev' )
 
 RunService.RenderStepped:Connect(function()
