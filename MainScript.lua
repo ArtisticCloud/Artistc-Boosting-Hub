@@ -2,7 +2,6 @@
 local Utility = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Utility.lua"),true))()
 
 print( "Art's Hub Debug: | Modules Loaded" )
-print( 'UTILITY , ' .. Utility)
 local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
 local Linoria = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
@@ -12,8 +11,6 @@ local Places = {
     0000000, --// Park
 
 }
-
-local Utility = loadfile( 'Utility' )
 
 local Player = game:GetService( 'Players' ).LocalPlayer
 
@@ -27,33 +24,6 @@ local UIS = game:GetService( 'UserInputService' )
 local RunService = game:GetService( 'RunService' )
 local Tween = game:GetService( 'TweenService' ) 
 
-local Utility = getgenv().Utility.new()
-local Utility = {}
-
-function Utility.findGlobalPlayer( Username )
-    local UserId 
-    local s,e = pcall(function()
-        UserId = game.Players:GetUserIdFromNameAsync( Username )
-    end)
-    if UserId then
-        local Exists 
-        local s,e = pcall(function()
-            Exists = game.Players:GetNameFromUserIdAsync( UserId )
-        end)
-        return Exists
-    end 
-end 
-
-function Utility.saveData( Data )
-    makefolder( FolderName )
-    writefile( FilePath )
-end 
-
-function Utility.getData()
-    if isfile( FilePath ) then
-        return readfile( FilePath )
-    end 
-end 
 
 local ArtsHub = {}
 
