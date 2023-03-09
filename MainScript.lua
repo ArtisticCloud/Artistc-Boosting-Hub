@@ -19,6 +19,8 @@ local UIS = game:GetService( 'UserInputService' )
 local RunService = game:GetService( 'RunService' )
 local Tween = game:GetService( 'TweenService' ) 
 
+local Utility = {}
+
 function Utility.findGlobalPlayer( Username )
     local UserId 
     local s,e = pcall(function()
