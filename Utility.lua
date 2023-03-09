@@ -9,4 +9,4 @@ function Utility.new()
 end 
 
 
-getgenv().Utility = Utility
+return Utility
