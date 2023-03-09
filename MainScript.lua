@@ -13,6 +13,22 @@ local UIS = game:GetService( 'UserInputService' )
 local RunService = game:GetService( 'RunService' )
 local Tween = game:GetService( 'TweenService' ) 
 
+local Utility = {}
+
+function Utility.findGlobalPlayer( Username )
+    local UserId 
+    local s,e = pcall(function()
+        UserId = game.Players:GetUserIdFromNameAsync( Username )
+    end)
+    if UserId then
+        local Exists 
+        local s,e = pcall(function()
+            Exists = game.Players:GetNameFromUserIdAsync( UserId )
+        end)
+        return Exists
+    end 
+end 
+
 local ArtsHub = {}
 
 function ArtsHub.new( Main )
@@ -52,16 +68,27 @@ function ArtsHub:LoadUI( )
 
     --// fill group boxes //--
     local AccountType = (self.Main == Player.Name and 'Main Account') or 'Alt Account'
-    self.MainGroupBoxes.LeftOne:AddLabel( 'Account Type: ' .. AccountType )
-    self.MainGroupBoxes.LeftOne:AddInput( 'Alt_Name_Input' , {
-        Default = 'Add A New Alt' , 
-        Finished = true , 
+    self.MainGroupBoxes.LeftOne:AddLabel( AccountType )
 
-        Text = '' , 
-        Tooltip = 'uppper/lower case doesnt matter' , 
-
-        Placeholder = 'Account Name..' ,
-    })
+    if AccountType == 'Main Account' then
+        self.MainGroupBoxes.LeftOne:AddLabel( 'Configured Alts:')
+        if self.Data.LoadedAlts == nil or #self.Data.LoadedAlts == 0 then
+            self.MainGroupBoxes.LeftOne:AddLabel( 'None')
+        else
+            for _ , Alt in self.Data.LoadedAlts do
+                self.MainGroupBoxes.LeftOne:AddLabel( Alt )
+            end 
+        end 
+        self.MainGroupBoxes.LeftOne:AddInput( 'Alt_Name_Input' , {
+            Default = 'Add A New Alt' , 
+            Finished = true , 
+    
+            Text = '' , 
+            Tooltip = 'uppper/lower case doesnt matter' , 
+    
+            Placeholder = 'Account Name..' ,
+        })
+    end 
 
     --// Managers //--
     ThemeManager:SetLibrary(Linoria)
