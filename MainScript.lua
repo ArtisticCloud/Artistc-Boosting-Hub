@@ -3,12 +3,28 @@ local Linoria = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
 
 --// Create the window //--
-function Run()
-    Linoria:CreateWindow({
+
+local ArtsHub = {}
+
+function ArtsHub.new()
+    local self = setmetatable({},{__index=Artshub})
+
+    self:LoadUI()
+    return self 
+end 
+
+function ArtsHub:LoadUI()
+   Window = Linoria:CreateWindow({
         Title = "Art's Boosting Hub" , 
         AutoShow = true , 
     })
-end 
+
+    --// Load Tabs //--
+    local MainTab = Window:AddTab( 'Main' ) 
+    local Settings = Window:AddTab( 'Settings' )
+end
+
+getgenv().ArtsHub = ArtsHub.new()
 
 Run() ; 
 --// tabs //--
