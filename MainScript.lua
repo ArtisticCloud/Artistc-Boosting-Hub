@@ -20,7 +20,7 @@ local RunService = game:GetService( 'RunService' )
 local Tween = game:GetService( 'TweenService' ) 
 
 local Utility = Utility.new()
-print('utility' , Utility)
+print('utility class' , Utility)
 
 function Utility.findGlobalPlayer( Username )
     local UserId 
@@ -76,6 +76,7 @@ function ArtsHub.new( Main )
 
     self:LoadData()
     self:LoadUI()
+    self:Events()
 
     return self 
 end 
@@ -135,6 +136,18 @@ function ArtsHub:LoadUI( )
 
     --// Keybinds //--
 end
+
+function ArtsHub:Events()
+    game.Players.PlayerAdded:Connect(function( PlayerWhoJoined ) 
+        if table.find( self.Snitches , PlayerWhoJoined.Name ) then
+            Player:Kick( PlayerWhoJoined.Name .. ' joined and tried to snitch on you lmao' )
+        end 
+        Linoria:Notify( PlayerWhoJoined.Name .. ' has joined the game' , 30 )
+    end)
+    game.Players.PlayerRemoving:Connect(function( PlayerWhoLeft )
+        Linoria:Notify( PlayerWhoLeft.Name .. ' has left the game' , 15 )
+    end)
+end 
 
 function ArtsHub:Unload()
     Linoria:UnLoad() 
