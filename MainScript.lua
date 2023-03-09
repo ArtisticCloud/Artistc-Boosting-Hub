@@ -51,13 +51,14 @@ function ArtsHub:LoadUI( )
     self.MainGroupBoxes.LeftOne = self.MainTab:AddLeftGroupbox( 'Account Manager' )
 
     --// fill group boxes //--
-    self.MainGroupBoxes.LeftOne:AddLabel( 'Main Account' )
+    local AccountType = (self.Main == Player.Name and 'Main Account') or 'Alt Account'
+    self.MainGroupBoxes.LeftOne:AddLabel( 'Account Type: ' .. AccountType )
     self.MainGroupBoxes.LeftOne:AddInput( 'Alt_Name_Input' , {
         Default = 'Add A New Alt' , 
         Finished = true , 
 
         Text = '' , 
-        Tooltip = 'Put the username of the alt, uppper/lower case doesnt matter' , 
+        Tooltip = 'uppper/lower case doesnt matter' , 
 
         Placeholder = 'Account Name..' ,
     })
