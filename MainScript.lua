@@ -2,7 +2,7 @@
 local Utility = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Utility.lua"),true))()
 
 print( "Art's Hub Debug: | Modules Loaded" )
-print( 'UTILITY , ' .. unpack(Utility))
+print( 'UTILITY , ' .. Utility)
 local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
 local Linoria = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
