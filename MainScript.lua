@@ -13,6 +13,7 @@ local UIS = game:GetService( 'UserInputService' )
 local RunService = game:GetService( 'RunService' )
 local Tween = game:GetService( 'TweenService' ) 
 
+local Module = require( Utility )
 local ArtsHub = {}
 
 function ArtsHub.new( Main )
