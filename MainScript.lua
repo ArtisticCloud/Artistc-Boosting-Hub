@@ -3,17 +3,23 @@ local Linoria = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
 
+local Places = {
+
+}
+
 local Player = game.Players.LocalPlayer 
 
 --// File data //--
 local FolderName = "Art's Hub"
+local DataFileName = 'Hub Data'
+local FilePath = FolderName .. '/' .. DataFileName .. '.txt'
 
 --// Services //--
 local UIS = game:GetService( 'UserInputService' ) 
 local RunService = game:GetService( 'RunService' )
 local Tween = game:GetService( 'TweenService' ) 
 
-local Utility = {}
+print('utility' , Utility)
 
 function Utility.findGlobalPlayer( Username )
     local UserId 
@@ -29,10 +35,20 @@ function Utility.findGlobalPlayer( Username )
     end 
 end 
 
+function Utility.saveData( Data )
+    makefolder( FolderName )
+    writefile( FilePath )
+end 
+
+function Utility.getData()
+    if isfile( FilePath ) then
+        return readfile( FilePath )
+    end 
+end 
+
 local ArtsHub = {}
 
 function ArtsHub.new( Main )
-    print( ArtsHub )
     local self = setmetatable({},{
         __index = ArtsHub
     })
@@ -43,14 +59,28 @@ function ArtsHub.new( Main )
     self.SettingsTab = nil 
     self.Data = {}
 
+    self.AccountType = (self.Main == Player.Name and 'Main') or 'Alt'
+
+    self.Snitches = { --// Automatically kick out the game if one of these joins
+        'xv_nike' , 
+        'errorchekz' ,
+        'superflousbacon' , 
+        'zornage' , 
+        'luadimer' , 
+        'coolius' , 
+
+    }
+
     self.MainGroupBoxes = {}
 
+    self:LoadData()
     self:LoadUI()
+
     return self 
 end 
 
-function ArtsHub:GetData()
-
+function ArtsHub:LoadData()
+    
 end
 
 function ArtsHub:LoadUI( )
@@ -79,12 +109,12 @@ function ArtsHub:LoadUI( )
                 self.MainGroupBoxes.LeftOne:AddLabel( Alt )
             end 
         end 
-        self.MainGroupBoxes.LeftOne:AddInput( 'Alt_Name_Input' , {
+        self.MainGroupBoxes.LeftOne:AddInput( 'Add_Alt_Input' , {
             Default = 'Add A New Alt' , 
             Finished = true , 
     
             Text = '' , 
-            Tooltip = 'uppper/lower case doesnt matter' , 
+            Tooltip = 'add account' , 
     
             Placeholder = 'Account Name..' ,
         })
