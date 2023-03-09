@@ -1,5 +1,5 @@
 --// Art's Hub modules //--
-local Utility = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Utility.lua"),true))()
+local Utility = loadstring(game:GetService('HttpService'):GetAsync(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Utility.lua"),true))()
 
 print( "Art's Hub Debug: | Modules Loaded" )
 print( 'UTILITY , ' .. unpack(Utility))
