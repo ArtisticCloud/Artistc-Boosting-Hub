@@ -6,6 +6,7 @@ local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))
 local Places = {
 
 }
+local Utility = loadfile( 'Utility' )
 
 local Player = game.Players.LocalPlayer 
 
@@ -19,6 +20,7 @@ local UIS = game:GetService( 'UserInputService' )
 local RunService = game:GetService( 'RunService' )
 local Tween = game:GetService( 'TweenService' ) 
 
+local Utility = getgenv().Utility.new()
 local Utility = {}
 
 function Utility.findGlobalPlayer( Username )
