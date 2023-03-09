@@ -7,7 +7,7 @@ local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
 local ArtsHub = {}
 
 function ArtsHub.new()
-    local self = setmetatable({},{__index=Artshub})
+    local self = setmetatable({},{__index=ArtsHub})
 
     self:LoadUI()
     return self 
