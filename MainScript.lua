@@ -19,6 +19,7 @@ local UIS = game:GetService( 'UserInputService' )
 local RunService = game:GetService( 'RunService' )
 local Tween = game:GetService( 'TweenService' ) 
 
+local Utility = Utility.new()
 print('utility' , Utility)
 
 function Utility.findGlobalPlayer( Username )
