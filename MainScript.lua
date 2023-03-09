@@ -51,7 +51,7 @@ function ArtsHub:LoadUI( )
     self.MainGroupBoxes.LeftOne = self.MainTab:AddLeftGroupbox( 'RinBigPapi Gets No Bitches' )
 
     --// fill group boxes //--
-    self.MainGroupBoxes.LeftOne:AddLabel( '<i>Main Account</i>' )
+    self.MainGroupBoxes.LeftOne:AddLabel( 'Main Account' )
     self.MainGroupBoxes.LeftOne:AddInput( 'Alt_Name_Input' , {
         Default = 'Add A New Alt' , 
         Finished = true , 
