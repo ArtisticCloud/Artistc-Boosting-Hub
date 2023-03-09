@@ -1,5 +1,6 @@
 --// Art's Hub modules //--
 local Utility = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Utility.lua"),true))()
+local Info = loadstring(game:HttpGet('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Info.lua'),true)()
 
 print( "Art's Hub Debug: | Modules Loaded" )
 local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
