@@ -51,9 +51,7 @@ function ArtsHub:LoadUI( )
     self.MainGroupBoxes.LeftOne = self.MainTab:AddLeftGroupbox( 'RinBigPapi Gets No Bitches' )
 
     --// fill group boxes //--
-    self.MainGroupBoxes.LeftOne:AddLabel( 'Main Account' )
-    self.MainGroupBoxes.LeftOne:AddLabel( self.Main )
-    self.MainGroupBoxes.LeftOne:AddLabel( 'Alt Accounts' )
+    self.MainGroupBoxes.LeftOne:AddLabel( '<i>Main Account</i>' )
     self.MainGroupBoxes.LeftOne:AddInput( 'Alt_Name_Input' , {
         Default = 'Add A New Alt' , 
         Finished = true , 
@@ -74,16 +72,24 @@ function ArtsHub:LoadUI( )
     ThemeManager:SetFolder(FolderName)
     SaveManager:SetFolder(FolderName .. '/' .. 'Themes')
 
-    SaveManager:BuildConfigSection(self.SettingsTab) 
     ThemeManager:ApplyToTab(self.SettingsTab)
 
     --// Keybinds //--
 end
 
+function ArtsHub:Unload()
+    Linoria:UnLoad() 
+    setmetatable(self,nil)
+end 
+
 function ArtsHub:Update()
 
 end
 
+if getgenv().ArtsHub then
+    getgenv().ArtsHub:Unload()
+    getgenv().ArtsHub = nil 
+end 
 getgenv().ArtsHub = ArtsHub.new( 'iArtisticDev' )
 
 RunService.RenderStepped:Connect(function()
