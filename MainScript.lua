@@ -13,7 +13,7 @@ local UIS = game:GetService( 'UserInputService' )
 local RunService = game:GetService( 'RunService' )
 local Tween = game:GetService( 'TweenService' ) 
 
-local Module = require( Utility )
+local Module = require( './Utility' )
 local ArtsHub = {}
 
 function ArtsHub.new( Main )
@@ -49,7 +49,7 @@ function ArtsHub:LoadUI( )
     self.SettingsTab = self.Window:AddTab( 'Settings' )
 
     --// Group Boxes //--
-    self.MainGroupBoxes.LeftOne = self.MainTab:AddLeftGroupbox( 'RinBigPapi Gets No Bitches' )
+    self.MainGroupBoxes.LeftOne = self.MainTab:AddLeftGroupbox( 'Account Manager' )
 
     --// fill group boxes //--
     self.MainGroupBoxes.LeftOne:AddLabel( 'Main Account' )
@@ -58,9 +58,9 @@ function ArtsHub:LoadUI( )
         Finished = true , 
 
         Text = '' , 
-        Tooltip = 'Add a new alt' , 
+        Tooltip = 'Put the username of the alt, uppper/lower case doesnt matter' , 
 
-        Placeholder = 'Name..' ,
+        Placeholder = 'Account Name..' ,
     })
 
     --// Managers //--
