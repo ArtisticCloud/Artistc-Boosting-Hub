@@ -5,6 +5,13 @@ local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
 
 local Player = game.Players.LocalPlayer 
 
+--// File data //--
+local FolderName = "Art's Hub"
+
+--// Services //--
+local UIS = game:GetService( 'UserInputService' ) 
+local RunService = game:GetService( 'RunService' )
+local Tween = game:GetService( 'TweenService' ) 
 
 local ArtsHub = {}
 
@@ -16,6 +23,7 @@ function ArtsHub.new()
 
     self.MainTab = nil 
     self.Settings = nil 
+    self.Data = {}
 
     self.MainGroupBoxes = {}
 
@@ -23,7 +31,11 @@ function ArtsHub.new()
     return self 
 end 
 
-function ArtsHub:LoadUI()
+function ArtsHub:GetData()
+
+end
+
+function ArtsHub:LoadUI( Main )
    self.Window = Linoria:CreateWindow({
         Title = "Art's Boosting Hub" , 
         AutoShow = true , 
@@ -34,7 +46,21 @@ function ArtsHub:LoadUI()
     self.Settings = self.Window:AddTab( 'Settings' )
 
     --// Group Boxes //--
-    self.MainGroupBoxes.One = self.MainTab:AddLeftGroupbox( 'RinBigPapi Gets No Bitches' )
+    self.MainGroupBoxes.LeftOne = self.MainTab:AddLeftGroupbox( 'RinBigPapi Gets No Bitches' )
+    self.MainGroupBoxes.LeftOne:AddLabel( 'Alts' )
+
+    --// Managers //--
+    ThemeManager:SetLibrary(Linoria)
+    SaveManager:SetLibrary(Linoria)
+
+    SaveManager:IgnoreThemeSettings() 
+    SaveManager:SetIgnoreIndexes({ 'MenuKeybind' }) 
+
+    ThemeManager:SetFolder(FolderName')
+    SaveManager:SetFolder(FolderName .. '/' .. 'Themes')
+
+
+    --// Keybinds //--
 end
 
 function ArtsHub:Update()
@@ -42,5 +68,11 @@ function ArtsHub:Update()
 end
 
 getgenv().ArtsHub = ArtsHub.new()
+
+RunService.RenderStepped:Connect(function()
+    if getgenv().ArtsHub and getmetatable(getgenv().ArtsHub) then
+        getgenv().ArtsHub:Update()
+    end 
+end)
 
 --// tabs //--
