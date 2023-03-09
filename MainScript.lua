@@ -17,6 +17,8 @@ function ArtsHub.new()
     self.MainTab = nil 
     self.Settings = nil 
 
+    self.MainGroupBoxes = {}
+
     self:LoadUI()
     return self 
 end 
@@ -28,9 +30,10 @@ function ArtsHub:LoadUI()
     })
 
     --// Load Tabs //--
-    print( 'Loading tabs' , self.Window )
     self.MainTab = self.Window:AddTab( 'Main' ) 
     self.Settings = self.Window:AddTab( 'Settings' )
+
+    self.MainGroupBoxes.One = self.MainTab:AddLeftGroupbox( 'RinBigPapi Gets No Bitches' )
 end
 
 function ArtsHub:Update()
@@ -39,7 +42,4 @@ end
 
 getgenv().ArtsHub = ArtsHub.new()
 
-
-
-Run() ; 
 --// tabs //--
