@@ -22,7 +22,7 @@ function ArtsHub.new()
     })
 
     self.MainTab = nil 
-    self.Settings = nil 
+    self.SettingsTab = nil 
     self.Data = {}
 
     self.MainGroupBoxes = {}
@@ -43,7 +43,7 @@ function ArtsHub:LoadUI( Main )
 
     --// Load Tabs //--
     self.MainTab = self.Window:AddTab( 'Main' ) 
-    self.Settings = self.Window:AddTab( 'Settings' )
+    self.SettingsTab = self.Window:AddTab( 'Settings' )
 
     --// Group Boxes //--
     self.MainGroupBoxes.LeftOne = self.MainTab:AddLeftGroupbox( 'RinBigPapi Gets No Bitches' )
@@ -59,6 +59,8 @@ function ArtsHub:LoadUI( Main )
     ThemeManager:SetFolder(FolderName')
     SaveManager:SetFolder(FolderName .. '/' .. 'Themes')
 
+    SaveManager:BuildConfigSection(self.SettingsTab) 
+    ThemeManager:ApplyToTab(self.SettingsTab)
 
     --// Keybinds //--
 end
