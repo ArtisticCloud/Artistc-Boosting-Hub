@@ -46,7 +46,18 @@ function ArtsHub:LoadUI( Main )
 
     --// Group Boxes //--
     self.MainGroupBoxes.LeftOne = self.MainTab:AddLeftGroupbox( 'RinBigPapi Gets No Bitches' )
+
+    --// fill group boxes //--
     self.MainGroupBoxes.LeftOne:AddLabel( 'Alts' )
+    slef.MainGroupBoxes.LeftOne:AddInput( 'Alt_Name_Input' , {
+        Default = 'Add A New Alt' , 
+        Finished = true , 
+
+        Text = '' , 
+        Tooltip = 'Add a new alt'
+
+        Placeholder = 'Name..'
+    })
 
     --// Managers //--
     ThemeManager:SetLibrary(Linoria)
