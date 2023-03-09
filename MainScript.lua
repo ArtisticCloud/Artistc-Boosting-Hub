@@ -33,6 +33,7 @@ function ArtsHub:LoadUI()
     self.MainTab = self.Window:AddTab( 'Main' ) 
     self.Settings = self.Window:AddTab( 'Settings' )
 
+    --// Group Boxes //--
     self.MainGroupBoxes.One = self.MainTab:AddLeftGroupbox( 'RinBigPapi Gets No Bitches' )
 end
 
