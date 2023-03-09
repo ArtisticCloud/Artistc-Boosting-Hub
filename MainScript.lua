@@ -1,8 +1,10 @@
+repeat task.wait() until game:IsLoaded()
 local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
 local Linoria = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
 
---// Create the window //--
+local Player = game.Players.LocalPlayer 
+
 
 local ArtsHub = {}
 
@@ -31,7 +33,13 @@ function ArtsHub:LoadUI()
     self.Settings = self.Window:AddTab( 'Settings' )
 end
 
+function ArtsHub:Update()
+
+end
+
 getgenv().ArtsHub = ArtsHub.new()
+
+
 
 Run() ; 
 --// tabs //--
