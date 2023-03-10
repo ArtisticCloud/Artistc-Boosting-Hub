@@ -2,7 +2,7 @@ local Utility = {}
 
 function Utility.findGlobalPlayer( Username )
     local UserId 
-    local s,e = pcall(function()
+    pcall(function()
         UserId = game.Players:GetUserIdFromNameAsync( Username )
     end)
     if UserId then
@@ -11,6 +11,15 @@ function Utility.findGlobalPlayer( Username )
             Exists = game.Players:GetNameFromUserIdAsync( UserId )
         end)
         return Exists
+    end 
+end 
+
+function Utility.findLocalPlayer( Username )
+    for _,Player in game:GetService( 'Players' ):GetPlayers() do
+        if Player.Name:lower():find( Username:lower() ) then
+            return Player
+        end 
+        continue
     end 
 end 
 
