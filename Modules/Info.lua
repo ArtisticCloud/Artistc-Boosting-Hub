@@ -1,7 +1,7 @@
 local Info = {}
 
 
-
+Info.MaxAlts = 5
 
 
 

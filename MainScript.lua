@@ -1,6 +1,7 @@
 --// Art's Hub modules //--
-local Utility = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Utility.lua"),true))()
-local Info = loadstring(game:HttpGet('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Info.lua'),true)()
+local Utility = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Utility.lua"),true))()
+local Info = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Info.lua"),true))()
+local Commands = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Commands.lua'),true))()
 
 print( "Art's Hub Debug: | Modules Loaded" )
 local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
@@ -40,16 +41,18 @@ function ArtsHub.new( Main )
     self.Data = {}
 
     self.AccountType = (self.Main == Player.Name and 'Main') or 'Alt'
+    self.RegisteredAlts = {}
 
     self.Snitches = { --// Automatically kick out the game if one of these joins
         'xv_nike' , 
         'errorchekz' ,
-        'superflousbacon' , 
+        'superfluousbacon' , 
         'zornage' , 
         'luadimer' , 
         'coolius' , 
-
+        'ashleydaballer' , 
     }
+
 
     self.MainGroupBoxes = {}
 
@@ -79,17 +82,19 @@ function ArtsHub:LoadUI( )
 
     --// fill group boxes //--
     local AccountType = (self.Main == Player.Name and 'Main Account') or 'Alt Account'
-    self.MainGroupBoxes.LeftOne:AddLabel( AccountType )
+    self.MainGroupBoxes.LeftOne:AddLabel( 'Type: ' .. AccountType )
 
     if AccountType == 'Main Account' then
         self.MainGroupBoxes.LeftOne:AddLabel( 'Configured Alts:')
-        if self.Data.LoadedAlts == nil or #self.Data.LoadedAlts == 0 then
-            self.MainGroupBoxes.LeftOne:AddLabel( 'None')
-        else
-            for _ , Alt in self.Data.LoadedAlts do
-                self.MainGroupBoxes.LeftOne:AddLabel( Alt )
+        --// display the registered alts //--
+        for i=1,Info.MaxAlts do
+            if self.RegisteredAlts[i] then
+                self.MainGroupBoxes:AddLabel( self.RegisteredAlts[i] )
+            else
+                self.MainGroupBoxes:AddLabel( 'None' )
             end 
-        end 
+        end
+
         self.MainGroupBoxes.LeftOne:AddInput( 'Add_Alt_Input' , {
             Default = 'Add A New Alt' , 
             Finished = true , 
@@ -99,6 +104,7 @@ function ArtsHub:LoadUI( )
     
             Placeholder = 'Account Name..' ,
         })
+            
     end 
 
     --// Managers //--
@@ -116,9 +122,15 @@ function ArtsHub:LoadUI( )
     --// Keybinds //--
 end
 
+function ArtsHub:RegisterAlt( AltName )
+    if self.AccountType == 'Main' and #self.RegisterAlts < Info.MaxAlts then
+        
+    end 
+end 
+
 function ArtsHub:Events()
     game.Players.PlayerAdded:Connect(function( PlayerWhoJoined ) 
-        if table.find( self.Snitches , PlayerWhoJoined.Name ) then
+        if table.find( self.Snitches , PlayerWhoJoined.Name:lower() ) then
             Player:Kick( PlayerWhoJoined.Name .. ' joined and tried to snitch on you lmao' )
         end 
         Linoria:Notify( PlayerWhoJoined.Name .. ' has joined the game' , 30 )
@@ -136,6 +148,7 @@ end
 function ArtsHub:Update()
 
 end
+
 
 getgenv().ArtsHub = ArtsHub.new( 'iArtisticDev' )
 
