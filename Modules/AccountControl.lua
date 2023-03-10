@@ -19,5 +19,8 @@ function AccountControl:registerAccount( Username , Userid )
     print( 'Data' , unpack(Data) )
 end 
 
+function AccountControl:unregisterAccount( Username , UserId )
+    local Data = Utility.getData( Info.ACFileName ) or {}
+end     
 
 return AccountControl

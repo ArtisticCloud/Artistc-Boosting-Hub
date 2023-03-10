@@ -7,14 +7,22 @@ Info.MaxAlts = 5
 Info.FolderName = "Art's Hub"
 Info.ACFileName = "Account Control" 
 Info.GDFileName = 'General Data'
+Info.GDFileTemplate = {
+    Main = '' , 
+    Alts = {} , 
+    TeleportingTo = '' , 
+}
 
 --// Ingame stuff //--
 Info.Places = {
-
+    Park = 0 , 
+    RecLobby = 0,
+    Plaza = 0 ,
+    MainMenu = 0,
 }
 
 --// UI Stuff //--
-Info.DefaultKeybind = 'Alt'
+Info.DefaultKeybind = 'Left'
 
 --// Misc. //--
 

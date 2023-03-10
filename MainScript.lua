@@ -56,9 +56,9 @@ function ArtsHub.new( Main )
     self.MainGroupBoxes = {}
     self.SettingsGroupBoxes = {}
 
-    self:LoadData()
     self:LoadUI()
     self:Events()
+    Linoria:Notify( "Art's Hub Initalized. \nPlease use Khyshub along with this hub. \nim not making you an auto timer" , 12 )
 
     return self 
 end 
@@ -139,11 +139,11 @@ function ArtsHub:LoadUI( )
     --// Settings right group box //--
     self.SettingsGroupBoxes.RightOne = self.SettingsTab:AddRightGroupbox( 'Extra Settings' )
     self.SettingsGroupBoxes.RightOne:AddDivider()
-    self.SettingsGroupBoxes.RightOne:AddLabel( 'Toggle Keybind' ):AddKeyPicker({
-        Default = Info.DefaultKeybind , 
+    self.SettingsGroupBoxes.RightOne:AddLabel( 'Toggle Keybind' ):AddKeyPicker( 'Toggle_Keybind' , {
+        Default = 'Left' , 
         Text = 'UI Keybind' , 
     })
-    Linoria.ToggleKeybind = Options.MenuKeybind
+    Linoria.ToggleKeybind = Options.Toggle_Keybind
 
     --// Register the events once it is created //--
     self:UIEvents()
@@ -178,7 +178,7 @@ function ArtsHub:UIEvents()
                 Linoria:Notify( 'Alt capacity reached. \n Try deleting an alt' , 10 )
             end
             if PlayerName == self.Main then
-                Linoria:Notify( 'Player cannot be owner' , 10 )
+                Linoria:Notify( 'Main account cannot be set as alt' , 10 )
                 return
             end
             self.AccountControl:registerAccount( PlayerName , PlayerUserId )
@@ -207,6 +207,12 @@ function ArtsHub:Update()
 
 end
 
+--// Check is there is any data under the player //--
+local Data = Utility.getData( GDFileName )
+if not Data then
+    print( "Art's Hub Debug: | User has not data, creating a new data set" )
+    Utility.saveData( Info.GDFileTemplate )
+end
 
 getgenv().ArtsHub = ArtsHub.new( 'iArtisticDev' )
 
