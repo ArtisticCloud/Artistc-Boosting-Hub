@@ -41,7 +41,10 @@ function ArtsHub.new( Main )
     self.Data = {}
 
     self.AccountType = (self.Main == Player.Name and 'Main') or 'Alt'
-    self.RegisteredAlts = {}
+    self.RegisteredAlts = {
+        'iArtisticDev' , 
+        'All' , 
+    }
 
     self.Snitches = { --// Automatically kick out the game if one of these joins
         'xv_nike' , 
@@ -82,30 +85,61 @@ function ArtsHub:LoadUI( )
 
     --// fill group boxes //--
     local AccountType = (self.Main == Player.Name and 'Main Account') or 'Alt Account'
+    self.MainGroupBoxes.LeftOne:AddDivider()
     self.MainGroupBoxes.LeftOne:AddLabel( 'Type: ' .. AccountType )
 
     if AccountType == 'Main Account' then
         self.MainGroupBoxes.LeftOne:AddLabel( 'Configured Alts:')
         --// display the registered alts //--
+        self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
         for i=1,Info.MaxAlts do
-            if self.RegisteredAlts[i] then
-                self.MainGroupBoxes:AddLabel( self.RegisteredAlts[i] )
+            local CurrentAlt = self.RegisteredAlts[i]
+            if CurrentAlt and CurrentAlt:lower() ~= 'all' then
+                local AccountLabel = self.MainGroupBoxes.LeftOne:AddLabel( self.RegisteredAlts[i] )
+                self.MainGroupBoxes.LeftOne:AddButton( 'Remove ' .. self.RegisteredAlts[i] , function()
+                    --// remove the registered alt here //--
+                    
+                end)
             else
-                self.MainGroupBoxes:AddLabel( 'None' )
+                self.MainGroupBoxes.LeftOne:AddLabel( 'None' )
+                self.MainGroupBoxes.LeftOne:AddButton( 'Remove None ' .. i , function() 
+                    --// no alt registered so do nothing basically
+                end)
             end 
         end
+        self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
 
         self.MainGroupBoxes.LeftOne:AddInput( 'Add_Alt_Input' , {
-            Default = 'Add A New Alt' , 
+            Default = '' , 
             Finished = true , 
     
-            Text = '' , 
-            Tooltip = 'add account' , 
+            Text = 'Add Account' , 
+            Tooltip = 'Press Enter to register' , 
     
             Placeholder = 'Account Name..' ,
         })
-            
     end 
+    --// Mainboxes Right //--
+    if self.AccountType == 'Main' then
+        self.MainGroupBoxes.RightOne = self.MainTab:AddRightGroupbox( 'Account Control' )
+        self.MainGroupBoxes.RightOne:AddDivider()
+        self.MainGroupBoxes.RightOne:AddDropdown( 'Account Dropdown' , {
+            Multi = true , 
+            Values = self.RegisteredAlts , 
+            Text = 'Account' , 
+        })
+        --// Command Buttons that alts will do //--
+        self.MainGroupBoxes.RightOne:AddLabel( 'Commands' ) 
+        self.MainGroupBoxes.RightOne:AddButton( 'Teleport To Main' , function()
+            
+        end)
+        self.MainGroupBoxes.RightOne:AddButton( 'Clear Commands' , function()
+            
+        end)
+    end 
+
+    --// Register the events once it is created //--
+    self:UIEvents()
 
     --// Managers //--
     ThemeManager:SetLibrary(Linoria)
@@ -126,6 +160,13 @@ function ArtsHub:RegisterAlt( AltName )
     if self.AccountType == 'Main' and #self.RegisterAlts < Info.MaxAlts then
         
     end 
+end 
+
+function ArtsHub:UIEvents()
+    Options.Add_Alt_Input:OnChanged(function()
+        local PlayerName , PlayerUserId = Utility.findGlobalPlayer( PlayerName ) 
+        print( PlayerName , PlayerUserId )
+    end)
 end 
 
 function ArtsHub:Events()
