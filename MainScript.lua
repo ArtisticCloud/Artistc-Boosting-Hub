@@ -56,6 +56,7 @@ function ArtsHub.new( Main )
     self.MainGroupBoxes = {}
     self.SettingsGroupBoxes = {}
 
+    self:LoadData()
     self:LoadUI()
     self:Events()
     Linoria:Notify( "Art's Hub Initalized. \nPlease use Khyshub along with this hub. \nim not making you an auto timer" , 12 )
@@ -64,8 +65,11 @@ function ArtsHub.new( Main )
 end 
 
 function ArtsHub:LoadData()
-    local Data = Utility.getData( Utility.GDFileName ) or {}
-    
+    local Data = Utility.getData( Utility.GDFileName )
+    if Data then
+        self.RegisteredAlts = Data.Alts 
+        self.Main = Data.Main
+    end
 end
 
 function ArtsHub:LoadUI( )
@@ -85,6 +89,10 @@ function ArtsHub:LoadUI( )
     local AccountType = (self.Main == Player.Name and 'Main Account') or 'Alt Account'
     self.MainGroupBoxes.LeftOne:AddDivider()
     self.MainGroupBoxes.LeftOne:AddLabel( 'Type: ' .. AccountType )
+
+    if self.Main == nil or self.Main == '' then
+        AccountType == 'Unregistered'
+    end
 
     if AccountType == 'Main Account' then
         self.MainGroupBoxes.LeftOne:AddLabel( 'Configured Alts:')
@@ -116,6 +124,8 @@ function ArtsHub:LoadUI( )
     
             Placeholder = 'Account Name..' ,
         })
+    elseif AccountType == 'Unregistered' then
+
     end 
     --// Mainboxes Right //--
     if self.AccountType == 'Main' then
@@ -163,12 +173,6 @@ function ArtsHub:LoadUI( )
     --// Keybinds //--
 end
 
-function ArtsHub:RegisterAlt( AltName )
-    if self.AccountType == 'Main' and #self.RegisterAlts < Info.MaxAlts then
-        
-    end 
-end 
-
 function ArtsHub:UIEvents()
     Options.Add_Alt_Input:OnChanged(function()
         local PlayerName , PlayerUserId = Utility.findGlobalPlayer( Options.Add_Alt_Input.Value ) 
@@ -211,10 +215,12 @@ end
 local Data = Utility.getData( Info.GDFileName )
 if not Data then
     print( "Art's Hub Debug: | User has not data, creating a new data set" )
-    Utility.saveData( Info.GDFileTemplate )
+    Data = Info.GDFileTemplate
+    Data.Main = Player.Name
+    Utility.saveData( Info.GDFileName , Info.GDFileTemplate )
+else
+    getgenv().ArtsHub = ArtsHub.new( Data.Main )
 end
-
-getgenv().ArtsHub = ArtsHub.new( 'iArtisticDev' )
 
 RunService.RenderStepped:Connect(function()
     if getgenv().ArtsHub and getmetatable(getgenv().ArtsHub) then
