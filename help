@@ -1,0 +1,2 @@
+label properties --> SetText( Text )
+Notify --> Linoria:Notify( Text , TimeInSeconds )
