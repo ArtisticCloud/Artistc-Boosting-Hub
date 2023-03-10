@@ -9,11 +9,6 @@ local Linoria = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
 
-local Places = {
-    0000000, --// Park
-
-}
-
 local Player = game:GetService( 'Players' ).LocalPlayer
 
 --// File data //--
@@ -164,8 +159,14 @@ end
 
 function ArtsHub:UIEvents()
     Options.Add_Alt_Input:OnChanged(function()
-        local PlayerName , PlayerUserId = Utility.findGlobalPlayer( PlayerName ) 
-        print( PlayerName , PlayerUserId )
+        local PlayerName , PlayerUserId = Utility.findGlobalPlayer( Options.Add_Alt_Input.Value ) 
+        if PlayerName then
+            if PlayerName == self.Main then
+                Linoria:Notify( 'Player cannot be owner' , 10 )
+                return
+            end
+
+        end 
     end)
 end 
 

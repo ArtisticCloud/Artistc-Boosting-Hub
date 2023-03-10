@@ -5,7 +5,6 @@ function Utility.findGlobalPlayer( Username )
     local s,e = pcall(function()
         UserId = game.Players:GetUserIdFromNameAsync( Username )
     end)
-    if not s then print(e) end
     if UserId then
         local Exists 
         local s,e = pcall(function()
