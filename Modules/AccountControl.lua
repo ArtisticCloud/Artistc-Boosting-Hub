@@ -15,7 +15,7 @@ function AccountControl.new( Hub )
 end 
 
 function AccountControl:registerAccount( Username , Userid )
-    local Data = Utility.getData() or {}
+    local Data = Utility.getData( Info.ACFileName ) or {}
     print( 'DATA' , Data )
 end 
 

@@ -1,4 +1,6 @@
 local Utility = {}
+local Info = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Info.lua"),true))()
+local Http = game:GetService( 'HttpService' )
 
 function Utility.findGlobalPlayer( Username )
     local UserId 
@@ -28,8 +30,8 @@ function Utility.saveData( Data )
     writefile( FilePath )
 end 
 
-function Utility.getData()
-    if isfile( FilePath ) then
+function Utility.getData( FileName )
+    if isfile( Info.FolderName .. '/' .. FileName .. '.txt' ) then
         return readfile( FilePath )
     end 
 end 
