@@ -57,6 +57,18 @@ function Utility.followPlayer( Player , UserId , UseData )
     return 'Invalid Place'
 end 
 
+function Utility.teleportTo( Place , Slot )
+    local Player = game:GetService( 'Players' ).LocalPlayer 
+    local CurrentPlace = Utility.findIndexFromValue( Info.Places , game.PlaceId )
+    if CurrentPlace and CurrentPlace:lower() ~= Place:lower() then
+        if CurrentPlace == 'Main Menu' then 
+            
+        end
+        return true
+    end
+    return 'Invalid Plce'
+end
+
 function Utility.findIndexFromValue( Table , Value )
     for index,value in pairs( Table ) do
         if value == Value then
