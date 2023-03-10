@@ -208,7 +208,7 @@ function ArtsHub:Update()
 end
 
 --// Check is there is any data under the player //--
-local Data = Utility.getData( GDFileName )
+local Data = Utility.getData( Info.GDFileName )
 if not Data then
     print( "Art's Hub Debug: | User has not data, creating a new data set" )
     Utility.saveData( Info.GDFileTemplate )

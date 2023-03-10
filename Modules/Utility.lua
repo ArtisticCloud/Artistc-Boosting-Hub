@@ -29,8 +29,8 @@ function Utility.findLocalPlayer( Username )
 end 
 
 function Utility.saveData( FileName , Data )
-    makefolder( FolderName )
-    writefile( FileName .. '/' .. FileName .. '.txt' , Http:JSONEncode( Data ) )
+    makefolder( Info.FolderName )
+    writefile( Info.FolderName .. '/' .. FileName .. '.txt' , Http:JSONEncode( Data ) )
 end 
 
 function Utility.getData( FileName )
