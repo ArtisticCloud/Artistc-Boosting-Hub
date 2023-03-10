@@ -215,8 +215,6 @@ end
 local Data = Utility.getData( Info.GDFileName )
 if not Data then
     print( "Art's Hub Debug: | User has not data, creating a new data set" )
-    Data = Info.GDFileTemplate
-    Data.Main = Player.Name
     Utility.saveData( Info.GDFileName , Info.GDFileTemplate )
 else
     getgenv().ArtsHub = ArtsHub.new( Data.Main )
