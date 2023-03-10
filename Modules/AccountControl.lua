@@ -16,7 +16,7 @@ end
 
 function AccountControl:registerAccount( Username , Userid )
     local Data = Utility.getData( Info.ACFileName ) or {}
-    print( 'DATA' , Data )
+    print( 'Data' , unpack(Data) )
 end 
 
 

@@ -54,6 +54,7 @@ function ArtsHub.new( Main )
     }
 
     self.MainGroupBoxes = {}
+    self.SettingsGroupBoxes = {}
 
     self:LoadData()
     self:LoadUI()
@@ -63,6 +64,7 @@ function ArtsHub.new( Main )
 end 
 
 function ArtsHub:LoadData()
+    local Data = Utility.getData( Utility.GDFileName ) or {}
     
 end
 
@@ -134,6 +136,15 @@ function ArtsHub:LoadUI( )
         end)
     end 
 
+    --// Settings right group box //--
+    self.SettingsGroupBoxes.RightOne = self.SettingsTab:AddRightGroupbox( 'Extra Settings' )
+    self.SettingsGroupBoxes.RightOne:AddDivider()
+    self.SettingsGroupBoxes.RightOne:AddLabel( 'Toggle Keybind' ):AddKeyPicker({
+        Default = Info.DefaultKeybind , 
+        Text = 'UI Keybind' , 
+    })
+    Linoria.ToggleKeybind = Options.MenuKeybind
+
     --// Register the events once it is created //--
     self:UIEvents()
 
@@ -162,6 +173,10 @@ function ArtsHub:UIEvents()
     Options.Add_Alt_Input:OnChanged(function()
         local PlayerName , PlayerUserId = Utility.findGlobalPlayer( Options.Add_Alt_Input.Value ) 
         if PlayerName then
+            --// Subtract 1 so it doesnt include the "all" section //--
+            if #self.RegisteredAlts - 1 >= Utility.MaxAlts then
+                Linoria:Notify( 'Alt capacity reached. \n Try deleting an alt' , 10 )
+            end
             if PlayerName == self.Main then
                 Linoria:Notify( 'Player cannot be owner' , 10 )
                 return
