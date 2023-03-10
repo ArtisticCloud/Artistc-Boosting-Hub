@@ -2,6 +2,7 @@
 local Utility = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Utility.lua"),true))()
 local Info = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Info.lua"),true))()
 local Commands = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Commands.lua'),true))()
+local AccountControl = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/AccountControl.lua'),true))()
 
 print( "Art's Hub Debug: | Modules Loaded" )
 local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
@@ -30,6 +31,7 @@ function ArtsHub.new( Main )
     })
 
     self.Main = Main
+    self.AccountControl = AccountControl.new( self )
 
     self.MainTab = nil 
     self.SettingsTab = nil 
@@ -50,7 +52,6 @@ function ArtsHub.new( Main )
         'coolius' , 
         'ashleydaballer' , 
     }
-
 
     self.MainGroupBoxes = {}
 
@@ -165,7 +166,7 @@ function ArtsHub:UIEvents()
                 Linoria:Notify( 'Player cannot be owner' , 10 )
                 return
             end
-
+            self.AccountControl:registerAccount( PlayerName , PlayerUserId )
         end 
     end)
 end 
