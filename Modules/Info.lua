@@ -12,6 +12,13 @@ Info.GDFileTemplate = {
     Alts = {} , 
     TeleportingTo = '' , 
 }
+Info.ACFileTemplate = {
+    Accounts = {} , 
+}
+Info.ACAccountData = {
+    'Online' = false , 
+    'Teleporting' = '' , 
+}
 
 --// Ingame stuff //--
 Info.Places = {

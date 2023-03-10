@@ -22,6 +22,10 @@ local UIS = game:GetService( 'UserInputService' )
 local RunService = game:GetService( 'RunService' )
 local Tween = game:GetService( 'TweenService' ) 
 
+Linoria:OnUnload(function()
+    print('Linoria Unloaded')
+    Linoria.Unloaded = true
+end)
 
 local ArtsHub = {}
 
@@ -37,7 +41,13 @@ function ArtsHub.new( Main )
     self.SettingsTab = nil 
     self.Data = {}
 
-    self.AccountType = (self.Main == Player.Name and 'Main') or 'Alt'
+    if Main == nil or Main == '' then
+        self.AccountType = 'Unregistered'
+    else
+        self.AccountType = (self.Main == Player.Name and 'Main') or 'Alt'
+    end 
+    print( "Art's Hub Debug: | Account Type: " .. self.AccountType)
+
     self.RegisteredAlts = {
         'iArtisticDev' , 
         'All' , 
@@ -56,7 +66,9 @@ function ArtsHub.new( Main )
     self.MainGroupBoxes = {}
     self.SettingsGroupBoxes = {}
 
-    self:LoadData()
+    self.UIElements = {}
+
+    -- self:LoadData()
     self:LoadUI()
     self:Events()
     Linoria:Notify( "Art's Hub Initalized. \nPlease use Khyshub along with this hub. \nim not making you an auto timer" , 12 )
@@ -65,7 +77,7 @@ function ArtsHub.new( Main )
 end 
 
 function ArtsHub:LoadData()
-    local Data = Utility.getData( Utility.GDFileName )
+    local Data = Utility.getData( Info.GDFileName )
     if Data then
         self.RegisteredAlts = Data.Alts 
         self.Main = Data.Main
@@ -86,15 +98,10 @@ function ArtsHub:LoadUI( )
     self.MainGroupBoxes.LeftOne = self.MainTab:AddLeftGroupbox( 'Account Manager' )
 
     --// fill group boxes //--
-    local AccountType = (self.Main == Player.Name and 'Main Account') or 'Alt Account'
     self.MainGroupBoxes.LeftOne:AddDivider()
-    self.MainGroupBoxes.LeftOne:AddLabel( 'Type: ' .. AccountType )
+    self.MainGroupBoxes.LeftOne:AddLabel( 'Type: ' .. self.AccountType )
 
-    if self.Main == nil or self.Main == '' then
-        AccountType == 'Unregistered'
-    end
-
-    if AccountType == 'Main Account' then
+    if self.AccountType == 'Main' then
         self.MainGroupBoxes.LeftOne:AddLabel( 'Configured Alts:')
         --// display the registered alts //--
         self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
@@ -124,8 +131,20 @@ function ArtsHub:LoadUI( )
     
             Placeholder = 'Account Name..' ,
         })
-    elseif AccountType == 'Unregistered' then
-
+    elseif self.AccountType == 'Unregistered' then
+        self.MainGroupBoxes.LeftOne:AddButton( 'Register As Main' , function()
+            local Data = Utility.getData( Info.GDFileName )
+            if not Data or Data and Data.Main == '' then
+                --// Create a new data set //--
+                local NewDataSet = Info.GDFileTemplate
+                NewDataSet.Main = Player.Name
+                self.AccountType = Player.Name 
+                --// Resave the data and reload the ui //--
+                Utility.saveData( Info.GDFileName , NewDataSet )
+                Linoria:Unload()
+            end
+        end)
+        return 
     end 
     --// Mainboxes Right //--
     if self.AccountType == 'Main' then
@@ -214,10 +233,12 @@ end
 --// Check is there is any data under the player //--
 local Data = Utility.getData( Info.GDFileName )
 if not Data then
-    print( "Art's Hub Debug: | User has not data, creating a new data set" )
-    Utility.saveData( Info.GDFileName , Info.GDFileTemplate )
+    getgenv().ArtsHub = ArtsHub.new()
 else
-    getgenv().ArtsHub = ArtsHub.new( Data.Main )
+    print( "Art's Hub Debug: | Data found, registering hub" )
+    if table.find( Data.Alts , Player.Name ) or Data.Main == Player.Name then 
+        getgenv().ArtsHub = ArtsHub.new( Data.Main )
+    end 
 end
 
 RunService.RenderStepped:Connect(function()
