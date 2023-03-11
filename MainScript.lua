@@ -199,7 +199,7 @@ function ArtsHub:UIEvents()
         local PlayerName , PlayerUserId = Utility.findGlobalPlayer( Options.Add_Alt_Input.Value ) 
         if PlayerName then
             --// Subtract 1 so it doesnt include the "all" section //--
-            if #self.RegisteredAlts - 1 >= Utility.MaxAlts then
+            if #self.RegisteredAlts - 1 >= Info.MaxAlts then
                 Linoria:Notify( 'Alt capacity reached. \n Try deleting an alt' , 10 )
             end
             if PlayerName == self.Main then
