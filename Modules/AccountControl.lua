@@ -20,14 +20,14 @@ function AccountControl:registerAccount( Username , Userid )
         if AccountControlData.Accounts[Username] then
             self.Linoria:Notify( Username .. ' is already registered..wtf is you doin' , 8 )
         else
-            AccountControlData.Accounts[Username] = Utility.ACAccountData
+            AccountControlData.Accounts[Username] = Info.ACAccountData
             self.Linoria:Notify( Username .. ' has been successfully registered' , 8 )
             return 'Success'
         end
     else
         --// Create new data
         local NewACData = Info.ACFileTemplate
-        NewACData.Accounts[Username] = Utility.ACAccountData
+        NewACData.Accounts[Username] = Info.ACAccountData
         --// nice //--
         Utility.saveData( Info.ACFileName , NewACData )
         self.Linoria:Notify( Username .. ' has been successfully registered' , 8 )
