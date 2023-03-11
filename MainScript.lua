@@ -69,8 +69,7 @@ function ArtsHub.new( Main )
     self.Linoria = Linoria
     self.AccountControl = AccountControl.new( self )
 
-    -- self:LoadData()
-    
+    self:LoadData()
     self:LoadUI()
     self:Events()
     Linoria:Notify( "Art's Hub Initalized. \nPlease use Khyshub along with this hub. \nim not making you an auto timer" , 12 )
@@ -80,9 +79,16 @@ end
 
 function ArtsHub:LoadData()
     local Data = Utility.getData( Info.GDFileName )
+    local AccountControlData = Utility.getData( Info.ACFileName )
     if Data then
-        self.RegisteredAlts = Data.Alts 
-        self.Main = Data.Main
+
+    end
+    if AccountControlData then
+        local n = 1
+        for Account,Values in pairs( AccountControl.Accounts ) do
+            self.RegisteredAlts[n] = Account
+            n = n + 1
+        end 
     end
 end
 
@@ -109,19 +115,18 @@ function ArtsHub:LoadUI( )
         self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
         for i=1,Info.MaxAlts do
             local CurrentAlt = self.RegisteredAlts[i]
+             --// store the element inside of the uielements table so i can change it later //--
+            self.UIElements[ 'Alt Label ' .. i ] = self.MainGroupBoxes.LeftOne:AddLabel( '' )
             if CurrentAlt and CurrentAlt:lower() ~= 'all' then
-                --// store the element inside of the uielements table so i can change it later //--
-                self.UIElements[ 'Alt Label ' .. i ] = self.MainGroupBoxes.LeftOne:AddLabel( self.RegisteredAlts[i] )
-                self.UIElements[ 'Alt Remove Button ' .. i] = self.MainGroupBoxes.LeftOne:AddButton( 'Remove ' .. self.RegisteredAlts[i] , function()
-                    --// remove the registered alt here //--
-                    print( 'attempting to remove alt ' .. i )
-                end)
+                self.UIElements[ 'Alt Label ' .. i ]:SetText( self.RegisteredAlts[i] )
             else
-                self.MainGroupBoxes.LeftOne:AddLabel( 'None' )
-                self.MainGroupBoxes.LeftOne:AddButton( 'Remove None ' .. i , function() 
-                    --// no alt registered so do nothing basically
-                end)
+                self.UIElements[ 'Alt Label ' .. i ]:SetText( 'None' )
             end 
+            self.UIElements[ 'Alt Remove Button ' .. i] = self.MainGroupBoxes.LeftOne:AddButton( 'Remove Account' , function()
+                --// remove the registered alt here //--
+                local Label = self.UIElements[ 'Alt Label ' .. i ]
+                Label:SetText( 'None' )
+            end)
         end
         self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
 
@@ -209,10 +214,21 @@ function ArtsHub:UIEvents()
             end
             local Feedback = self.AccountControl:registerAccount( PlayerName , PlayerUserId )
             if Feedback == 'Success' then
-                
+                local ChosenLabel 
+                for i=1,Info.MaxAlts do
+                    print(self.UIElements[ 'Alt Label ' .. i ].Text)
+                    if self.UIElements[ 'Alt Label ' .. i ].Value == 'None' then
+                        ChosenLabel = self.UIElements[ 'Alt Label  .. i']
+                    end
+                end
+                print(ChosenLabel)
+                if ChosenLabel then
+                    ChosenLabel:SetText( PlayerName )
+                end
             end 
         end 
     end)
+
 end 
 
 function ArtsHub:Events()

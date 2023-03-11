@@ -21,6 +21,7 @@ function AccountControl:registerAccount( Username , Userid )
             self.Linoria:Notify( Username .. ' is already registered..wtf is you doin' , 8 )
         else
             AccountControlData.Accounts[Username] = Info.ACAccountData
+            Utility.saveData( Info.ACFileName , AccountControlData )
             self.Linoria:Notify( Username .. ' has been successfully registered' , 8 )
             return 'Success'
         end
@@ -55,6 +56,29 @@ function AccountControl:changeCommand( Username , NewCommand )
     if Data and Data.Accounts[Username] then
         
     end
+end
+
+function AccountControl:registerRequest( PlayerName , PlayerUserId )
+     --// Subtract 1 so it doesnt include the "all" section //--
+     if #self.RegisteredAlts - 1 >= Info.MaxAlts then
+        self.Linoria:Notify( 'Alt capacity reached. \n Try deleting an alt' , 10 )
+    end
+    if PlayerName == self.Main then
+        self.Linoria:Notify( 'Main account cannot be set as alt' , 10 )
+        return
+    end
+    local Feedback = self:registerAccount( PlayerName , PlayerUserId )
+    if Feedback == 'Success' then
+        local ChosenLabel 
+        for i=1,Info.MaxAlts do
+            if self.UIElements[ 'Alt Label ' .. i ].Value == 'None' then
+                ChosenLabel = self.UIElements[ 'Alt Label  .. i']
+            end
+        end
+        if ChosenLabel then
+            ChosenLabel:SetText( PlayerName )
+        end
+    end 
 end
 
 return AccountControl
