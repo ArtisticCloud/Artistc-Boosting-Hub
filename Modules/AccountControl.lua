@@ -51,4 +51,11 @@ function AccountControl:unregisterAccount( Username , UserId )
     end
 end     
 
+function AccountControl:changeCommand( Username , NewCommand )
+    local Data = Utility.getData( Info.ACFileName )
+    if Data and Data.Accounts[Username] then
+        
+    end
+end
+
 return AccountControl

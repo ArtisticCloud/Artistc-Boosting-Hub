@@ -18,7 +18,8 @@ Info.ACFileTemplate = {
 Info.ACAccountData = {
     Online = false , 
     Teleporting = '' , 
-    CurrentPlace = ''
+    CurrentPlace = '' , 
+    CurrentTask = {OnBall='',OffBall=''} ,
 }
 
 --// Ingame stuff //--
@@ -27,6 +28,16 @@ Info.Places = {
     RecLobby = 0,
     Plaza = 0 ,
     MainMenu = 0,
+}
+
+Info.CommandTypes = {
+    OnBall = {
+        'Auto Shoot' , 
+        'Auto Pass' , 
+    } , 
+    OffBall = {
+        'Auto Guard'
+    } , 
 }
 
 --// UI Stuff //--
