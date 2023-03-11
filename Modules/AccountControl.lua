@@ -30,7 +30,7 @@ function AccountControl:registerAccount( Username , Userid )
         local NewACData = Info.ACFileTemplate
         NewACData.Accounts[Username] = Utility.ACAccountData
         --// nice //--
-        Utility.saveData( Utility.ACFileName , NewACData )
+        Utility.saveData( Info.ACFileName , NewACData )
         self.Linoria:Notify( Username .. ' has been successfully registered' , 8 )
         return 'Success'
     end
