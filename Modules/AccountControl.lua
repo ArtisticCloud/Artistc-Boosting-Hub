@@ -45,6 +45,7 @@ function AccountControl:unregisterAccount( Username , UserId )
         if AccountControlData.Accounts[Username] then
             AccountControlData.Accounts[Username] = nil
             Utility.saveData( Info.ACFileName , AccountControlData )
+            self.Linoria:Notify( 'Successfully removed ' .. Username )
             return 'Success'
         else
             self.Linoria:Notify( Username .. ' is not registered..wyd' , 12 )
