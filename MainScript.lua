@@ -135,6 +135,7 @@ function ArtsHub:LoadUI( )
             Default = true , 
             Tooltip = 'Semi-Accurate aimbot ig'
         })
+        print(Info.AimbotSliderSettings)
         self.UIElements.AimbotSlider = self.MainGroupBoxes.LeftOne:AddSlider( 'Aimbot Slider' , {
             Text = 'Aimbot Slider' , 
             Default = Info.AimbotSliderSettings.Max/2 ,
