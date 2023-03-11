@@ -11,6 +11,7 @@ Info.GDFileTemplate = {
     Main = '' , 
     Alts = {} , 
     TeleportingTo = '' , 
+    Boosting = false ,
 }
 Info.ACFileTemplate = {
     Accounts = {} , 

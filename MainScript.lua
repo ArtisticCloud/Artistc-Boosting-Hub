@@ -88,11 +88,15 @@ function ArtsHub:LoadData()
         end 
         if #self.RegisteredAlts < Info.MaxAlts then
             --// fill in the gaps if there are less than 5 total alts starting from n //--
-            for i=n,Info.MaxAlts - #self.RegisteredAlts do
+            for i=n-1,Info.MaxAlts - #self.RegisteredAlts do
                 self.RegisteredAlts[i] = ''
             end
         end
         n = 0
+    elseif not AccountControlData then
+        for i=1,Info.MaxAlts do
+            self.RegisteredAlts[i] = ''
+        end
     end
 end
 
@@ -115,6 +119,10 @@ function ArtsHub:LoadUI( )
 
     print( 'CHECKING' , self.RegisteredAlts[1])
     if self.AccountType == 'Main' then
+        self.UIElements.Boosting = self.MainGroupBoxes.LeftOne:AddToggle( 'Boosting' , {
+            Text = ' Boosting' , 
+            Tooltip = 'alts will automatically load the hub when on' , 
+        })
         self.MainGroupBoxes.LeftOne:AddLabel( 'Configured Alts:')
         --// display the registered alts //--
         self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
@@ -130,7 +138,14 @@ function ArtsHub:LoadUI( )
             self.UIElements[ 'Alt Remove Button ' .. i] = self.MainGroupBoxes.LeftOne:AddButton( 'Remove Account' , function()
                 --// remove the registered alt here //--
                 local Label = self.UIElements[ 'Alt Label ' .. i ]
-                
+                if CurrentAlt ~= '' then
+                    local Response = self.AccountControl:unregisterAccount( CurrentAlt )
+                    if Response == 'Success' then
+                        --// update the labels and the data //--
+                        Label:SetText( 'None' ) 
+                        self.RegisteredAlts[i] = ''
+                    end
+                end
             end)
         end
         self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
@@ -215,6 +230,7 @@ function ArtsHub:UIEvents()
                 return
             end
             local Feedback = self.AccountControl:registerAccount( PlayerName , PlayerUserId )
+            print(#self.RegisteredAlts)
             if Feedback == 'Success' then
                 for index,value in pairs(self.RegisteredAlts) do
                     if value == '' then

@@ -40,7 +40,6 @@ function AccountControl:registerAccount( Username , Userid )
 end 
 
 function AccountControl:unregisterAccount( Username , UserId )
-    self.Linoria:Notify( ('Removing ' .. Username .. '..') , 8 )
     local AccountControlData = Utility.getData( Info.ACFileName )
     if AccountControlData then
         if AccountControlData.Accounts[Username] then
