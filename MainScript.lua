@@ -110,10 +110,11 @@ function ArtsHub:LoadUI( )
         for i=1,Info.MaxAlts do
             local CurrentAlt = self.RegisteredAlts[i]
             if CurrentAlt and CurrentAlt:lower() ~= 'all' then
-                local AccountLabel = self.MainGroupBoxes.LeftOne:AddLabel( self.RegisteredAlts[i] )
-                self.MainGroupBoxes.LeftOne:AddButton( 'Remove ' .. self.RegisteredAlts[i] , function()
+                --// store the element inside of the uielements table so i can change it later //--
+                self.UIElements[ 'Alt Label ' .. i ] = self.MainGroupBoxes.LeftOne:AddLabel( self.RegisteredAlts[i] )
+                self.UIElements[ 'Alt Remove Button ' .. i] = self.MainGroupBoxes.LeftOne:AddButton( 'Remove ' .. self.RegisteredAlts[i] , function()
                     --// remove the registered alt here //--
-                    
+                    print( 'attempting to remove alt ' .. i )
                 end)
             else
                 self.MainGroupBoxes.LeftOne:AddLabel( 'None' )
@@ -206,7 +207,10 @@ function ArtsHub:UIEvents()
                 Linoria:Notify( 'Main account cannot be set as alt' , 10 )
                 return
             end
-            self.AccountControl:registerAccount( PlayerName , PlayerUserId )
+            local Feedback = self.AccountControl:registerAccount( PlayerName , PlayerUserId )
+            if Feedback == 'Success' then
+                
+            end 
         end 
     end)
 end 
