@@ -22,6 +22,10 @@ local FilePath = FolderName .. '/' .. DataFileName .. '.txt'
 local UIS = game:GetService( 'UserInputService' ) 
 local RunService = game:GetService( 'RunService' )
 local Tween = game:GetService( 'TweenService' ) 
+local Storage = game:GetService( 'ReplicatedStorage' )
+
+local Remotes = Storage:WaitForChild( 'Remotes' )
+local GameEvents = Storage:WaitForChild( 'GameEvents' , 20 )
 
 Linoria:OnUnload(function()
     print('Linoria Unloaded')
@@ -125,6 +129,17 @@ function ArtsHub:LoadUI( )
         self.UIElements.Boosting = self.MainGroupBoxes.LeftOne:AddToggle( 'Boosting' , {
             Text = ' Boosting' , 
             Tooltip = 'alts will automatically load the hub when on' , 
+        })
+        self.UIElements.Aimbot = self.MainGroupBoxes.LeftOne:AddToggle( 'Aimbot' , {
+            Text = 'Aimbot' , 
+            Default = true , 
+            Tooltip = 'Semi-Accurate aimbot ig'
+        })
+        self.UIElements.AimbotSlider = self.MainGroupBoxes.LeftOne:AddSlider( 'Aimbot Slider' , {
+            Text = 'Aimbot Slider' , 
+            Default = Info.AimbotSliderSettings.Max/2 ,
+            Min = Info.AimbotSliderSettings.Min ,
+            Max = Info.AimbotSliderSettings.Max , 
         })
         self.MainGroupBoxes.LeftOne:AddLabel( 'Configured Alts:')
         --// display the registered alts //--
@@ -277,6 +292,17 @@ function ArtsHub:Unload()
     Linoria:UnLoad() 
     setmetatable(self,nil)
 end 
+
+function ArtsHub:Aimbot()
+    local function HandleShooting()
+        if self.UIElements.Aimbot.Value then 
+            repeat task.wait() until (not Character:GetAttribute( 'Shooting') or Character:GetAttribute( 'ShotMeter' ) >= 0.65)
+            GameEvents.ClientAction:FireServer( 'Shoot' , false )
+        end
+    end
+    Character:GetAttributeChangedSignal( 'Shooting' ):Connect(HandleShooting)
+    Character:GetAttributeChangedSignal( 'AlleyOop' ):Connect(HandleShooting)
+end
 
 function ArtsHub:Update()
     --// reset the mouse icon //--
