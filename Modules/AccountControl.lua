@@ -25,7 +25,7 @@ function AccountControl:registerAccount( Username , Userid )
         end
     else
         --// Create new data
-        local NewACData = Utility.ACFileTemplate
+        local NewACData = Info.ACFileTemplate
         NewACData.Accounts[Username] = Utility.ACAccountData
         --// nice //--
         Utility.saveData( Utility.ACFileName , NewACData )
