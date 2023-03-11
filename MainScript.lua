@@ -117,7 +117,6 @@ function ArtsHub:LoadUI( )
     self.MainGroupBoxes.LeftOne:AddDivider()
     self.MainGroupBoxes.LeftOne:AddLabel( 'Type: ' .. self.AccountType )
 
-    print( 'CHECKING' , self.RegisteredAlts[1])
     if self.AccountType == 'Main' then
         self.UIElements.Boosting = self.MainGroupBoxes.LeftOne:AddToggle( 'Boosting' , {
             Text = ' Boosting' , 
