@@ -15,7 +15,6 @@ function AccountControl.new( Hub )
 end 
 
 function AccountControl:registerAccount( Username , Userid )
-    self.Linoria:Notify( ('Registering ' .. Username .. '..') , 8 )
     local AccountControlData = Utility.getData( Info.ACFileName )
     if AccountControlData then
         if AccountControlData.Accounts[Username] then
