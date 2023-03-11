@@ -130,18 +130,6 @@ function ArtsHub:LoadUI( )
             Text = ' Boosting' , 
             Tooltip = 'alts will automatically load the hub when on' , 
         })
-        self.UIElements.Aimbot = self.MainGroupBoxes.LeftOne:AddToggle( 'Aimbot' , {
-            Text = 'Aimbot' , 
-            Default = true , 
-            Tooltip = 'Semi-Accurate aimbot ig'
-        })
-        print(Info.AimbotSliderSettings)
-        self.UIElements.AimbotSlider = self.MainGroupBoxes.LeftOne:AddSlider( 'Aimbot Slider' , {
-            Text = 'Aimbot Slider' , 
-            Default = Info.AimbotSliderSettings.Max/2 ,
-            Min = Info.AimbotSliderSettings.Min ,
-            Max = Info.AimbotSliderSettings.Max , 
-        })
         self.MainGroupBoxes.LeftOne:AddLabel( 'Configured Alts:')
         --// display the registered alts //--
         self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
@@ -208,6 +196,30 @@ function ArtsHub:LoadUI( )
             
         end)
     end 
+    --// global group boxes //--
+    self.MainGroupBoxes.LeftTwo = self.MainTab:AddLeftGroupbox( 'Main' )
+    self.MainGroupBoxes.RightTwo = self.MainTab:AddRightGroupbox( 'Ingame stuff' )
+
+    --// Aimbot //--
+    self.UIElements.Aimbot = self.MainGroupBoxes.RightTwo:AddToggle( 'Aimbot' , {
+        Text = 'Aimbot' , 
+        Default = true , 
+        Tooltip = 'Semi-Accurate aimbot ig'
+    })
+    self.UIElements.AimbotSlider = self.MainGroupBoxes.RightTwo:AddSlider( 'Aimbot Slider' , {
+        Text = 'Aimbot Slider' , 
+        Default = 0.6,
+        Min = 0.3 ,
+        Max = 0.9 , 
+        Rounding = 2 , 
+    })
+    --------------------
+    --// Join logs //--
+    self.UIElements.JoinLogs = self.MainGroupBoxes.LeftTwo:AddToggle( 'Join Logs' , {
+        Text = 'Join Logs' , 
+        Default = true , 
+    })
+    -------------------
 
     --// Settings right group box //--
     self.SettingsGroupBoxes.RightOne = self.SettingsTab:AddRightGroupbox( 'Extra Settings' )
@@ -222,6 +234,9 @@ function ArtsHub:LoadUI( )
 
     --// Register the events once it is created //--
     self:UIEvents()
+    task.spawn(function()
+        self:Aimbot()
+    end)
 
     --// Managers //--
     ThemeManager:SetLibrary(Linoria)
@@ -282,10 +297,14 @@ function ArtsHub:Events()
         if table.find( self.Snitches , PlayerWhoJoined.Name:lower() ) then
             Player:Kick( PlayerWhoJoined.Name .. ' joined and tried to snitch on you lmao' )
         end 
-        Linoria:Notify( PlayerWhoJoined.Name .. ' has joined the game' , 30 )
+        if self.UIElements.JoinLogs.Value then
+            Linoria:Notify( PlayerWhoJoined.Name .. ' has joined the game' , 30 )
+        end
     end)
     game.Players.PlayerRemoving:Connect(function( PlayerWhoLeft )
-        Linoria:Notify( PlayerWhoLeft.Name .. ' has left the game' , 15 )
+        if self.UIElements.JoinLogs.Value then
+            Linoria:Notify( PlayerWhoLeft.Name .. ' has left the game' , 15 )
+        end
     end)
 end 
 
@@ -295,12 +314,23 @@ function ArtsHub:Unload()
 end 
 
 function ArtsHub:Aimbot()
+    repeat task.wait() until Player.Character
+    local Character = Player.Character
     local function HandleShooting()
-        if self.UIElements.Aimbot.Value then 
-            repeat task.wait() until (not Character:GetAttribute( 'Shooting') or Character:GetAttribute( 'ShotMeter' ) >= 0.65)
-            GameEvents.ClientAction:FireServer( 'Shoot' , false )
+        if self.UIElements.Aimbot.Value and Character:GetAttribute( 'Shooting' ) then 
+            repeat task.wait() until (not Character:GetAttribute( 'Shooting') or Character:GetAttribute( 'ShotMeter' ) >= self.UIElements.AimbotSlider.Value)
+            task.spawn(function()
+                GameEvents.ClientAction:FireServer( 'Shoot' , false )
+            end)
+            repeat task.wait() until Character:GetAttribute( 'ShotType' ) and Character:GetAttribute( 'LandedShotMeter' )
+            Linoria:Notify( 'ShotType: ' .. Character:GetAttribute( 'ShotType' ) .. '\n' .. 'Meter: ' .. Character:GetAttribute( 'LandedShotMeter' ) , 8.5 )
         end
     end
+    Player.CharacterAdded:Connect(function( NewCharacter )
+        Character = Player.Character
+        repeat task.wait() until Character:GetAttribute( 'Shooting' ) ~= nil
+        Character:GetAttributeChangedSignal( 'Shooting' ):Connect(HandleShooting)
+    end)
     Character:GetAttributeChangedSignal( 'Shooting' ):Connect(HandleShooting)
     Character:GetAttributeChangedSignal( 'AlleyOop' ):Connect(HandleShooting)
 end
