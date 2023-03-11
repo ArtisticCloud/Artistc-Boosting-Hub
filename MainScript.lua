@@ -35,7 +35,6 @@ function ArtsHub.new( Main )
     })
 
     self.Main = Main
-    self.AccountControl = AccountControl.new( self )
 
     self.MainTab = nil 
     self.SettingsTab = nil 
@@ -67,8 +66,11 @@ function ArtsHub.new( Main )
     self.SettingsGroupBoxes = {}
 
     self.UIElements = {}
+    self.Linoria = Linoria
+    self.AccountControl = AccountControl.new( self )
 
     -- self:LoadData()
+    
     self:LoadUI()
     self:Events()
     Linoria:Notify( "Art's Hub Initalized. \nPlease use Khyshub along with this hub. \nim not making you an auto timer" , 12 )
@@ -169,7 +171,7 @@ function ArtsHub:LoadUI( )
     self.SettingsGroupBoxes.RightOne = self.SettingsTab:AddRightGroupbox( 'Extra Settings' )
     self.SettingsGroupBoxes.RightOne:AddDivider()
     self.SettingsGroupBoxes.RightOne:AddLabel( 'Toggle Keybind' ):AddKeyPicker( 'Toggle_Keybind' , {
-        Default = 'Left' , 
+        Default = Info.DefaultKeybind , 
         Text = 'UI Keybind' , 
     })
     Linoria.ToggleKeybind = Options.Toggle_Keybind

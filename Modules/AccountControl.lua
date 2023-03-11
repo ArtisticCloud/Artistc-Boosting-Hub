@@ -15,8 +15,22 @@ function AccountControl.new( Hub )
 end 
 
 function AccountControl:registerAccount( Username , Userid )
+    self.Linoria:Notify( 'Registering ' .. Username .. '..')
     local AccountControlData = Utility.getData( Info.ACFileName ) or {}
-    print( 'Data' , unpack(AccountControlData) )
+    if AccountControlData then
+        if AccountControlData[Username] then
+            self.Linoria:Notify( Username .. ' is already registered..wtf is you doin' )
+        else
+            AccountControlData[Username] = Utility.ACAccountData
+        end
+    else
+        --// Create new data
+        local NewACData = Utility.ACFileTemplate
+        NewACData[Username] = Utility.ACAccountData
+        --// nice //--
+        Utility.saveData( Utility.ACFileName , NewACData )
+        self.Linoria:Notify( Username .. ' has been successfully registered' )
+    end
 end 
 
 function AccountControl:unregisterAccount( Username , UserId )
