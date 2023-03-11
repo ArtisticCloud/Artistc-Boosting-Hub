@@ -69,7 +69,7 @@ function ArtsHub.new( Main )
     self:LoadData()
     self:LoadUI()
     self:Events()
-    Linoria:Notify( "Art's Hub Initalized. \nPlease use Khyshub along with this hub. \nim not making you an auto timer" , 12 )
+    Linoria:Notify( "Art's Hub Initalized. \nPlease use Khyshub along with this hub, im not making you an auto timer" , 12 )
 
     return self 
 end 
@@ -87,11 +87,12 @@ function ArtsHub:LoadData()
             n = n + 1
         end 
         if #self.RegisteredAlts < Info.MaxAlts then
-            --// fill in the gaps if there are less than 5 total alts //--
-            for i=1,Info.MaxAlts - #self.RegisteredAlts do
+            --// fill in the gaps if there are less than 5 total alts starting from n //--
+            for i=n,Info.MaxAlts - #self.RegisteredAlts do
                 self.RegisteredAlts[i] = ''
             end
         end
+        n = 0
     end
 end
 
@@ -112,6 +113,7 @@ function ArtsHub:LoadUI( )
     self.MainGroupBoxes.LeftOne:AddDivider()
     self.MainGroupBoxes.LeftOne:AddLabel( 'Type: ' .. self.AccountType )
 
+    print( 'CHECKING' , self.RegisteredAlts[1])
     if self.AccountType == 'Main' then
         self.MainGroupBoxes.LeftOne:AddLabel( 'Configured Alts:')
         --// display the registered alts //--
@@ -208,10 +210,6 @@ function ArtsHub:UIEvents()
         local PlayerName , PlayerUserId = Utility.findGlobalPlayer( Options.Add_Alt_Input.Value ) 
         if PlayerName then
             --// Subtract 1 so it doesnt include the "all" section //--
-            if #self.RegisteredAlts - 1 >= Info.MaxAlts then
-                Linoria:Notify( 'Alt capacity reached. Try deleting an alt' , 12 )
-                return
-            end
             if PlayerName == self.Main then
                 Linoria:Notify( 'Main account cannot be set as alt' , 10 )
                 return
@@ -219,7 +217,6 @@ function ArtsHub:UIEvents()
             local Feedback = self.AccountControl:registerAccount( PlayerName , PlayerUserId )
             if Feedback == 'Success' then
                 for index,value in pairs(self.RegisteredAlts) do
-                    print( 'INDEX' , index , 'VALUE' , value)
                     if value == '' then
                         self.UIElements[ 'Alt Label ' .. index ]:SetText( PlayerName )
                         self.RegisteredAlts[index] = PlayerName

@@ -16,7 +16,7 @@ end
 
 function AccountControl:registerAccount( Username , Userid )
     local AccountControlData = Utility.getData( Info.ACFileName )
-    if AccountControlData then
+    if AccountControlData and Utility.tableLen(AccountControlData.Accounts) < Info.MaxAlts then
         if AccountControlData.Accounts[Username] then
             self.Linoria:Notify( Username .. ' is already registered..wtf is you doin' , 8 )
         else
@@ -25,7 +25,10 @@ function AccountControl:registerAccount( Username , Userid )
             self.Linoria:Notify( Username .. ' has been successfully registered' , 8 )
             return 'Success'
         end
-    else
+    elseif AccountControlData and Utility.tableLen(AccountControlData.Accounts) >= Info.MaxAlts then
+        self.Linoria:Notify( 'Alt capacity reached, try deleting an alt' , 9 )
+        return
+    elseif not AccountControlData then
         --// Create new data
         local NewACData = Info.ACFileTemplate
         NewACData.Accounts[Username] = Info.ACAccountData
