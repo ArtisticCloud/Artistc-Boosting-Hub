@@ -42,7 +42,7 @@ Info.CommandTypes = {
 }
 
 --// UI Stuff //--
-Info.DefaultKeybind = 'Left'
+Info.DefaultKeybind = 'Left Alt'
 
 --// Misc. //--
 

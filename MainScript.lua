@@ -191,18 +191,17 @@ function ArtsHub:LoadUI( )
         self.MainGroupBoxes.RightOne:AddButton( 'Teleport To Main' , function()
             
         end)
-        self.MainGroupBoxes.RightOne:AddButton( 'Clear Commands' , function()
-            
-        end)
     end 
 
     --// Settings right group box //--
     self.SettingsGroupBoxes.RightOne = self.SettingsTab:AddRightGroupbox( 'Extra Settings' )
     self.SettingsGroupBoxes.RightOne:AddDivider()
-    self.SettingsGroupBoxes.RightOne:AddLabel( 'Toggle Keybind' ):AddKeyPicker( 'Toggle_Keybind' , {
-        Default = Info.DefaultKeybind , 
+
+    local Menu_Keybind = self.SettingsGroupBoxes.RightOne:AddLabel( 'Toggle Keybind' ):AddKeyPicker( 'Toggle_Keybind' , {
+        Default = 'LeftAlt' , 
         Text = 'UI Keybind' , 
     })
+
     Linoria.ToggleKeybind = Options.Toggle_Keybind
 
     --// Register the events once it is created //--
@@ -281,7 +280,7 @@ end
 
 function ArtsHub:Update()
     --// reset the mouse icon //--
-    Mouse.Icon = ''
+    UIS.MouseIconEnabled = true
 end
 
 --// Check is there is any data under the player //--
@@ -299,4 +298,7 @@ RunService.RenderStepped:Connect(function()
     if getgenv().ArtsHub and getmetatable(getgenv().ArtsHub) then
         getgenv().ArtsHub:Update()
     end 
+    if not getgenv().ArtsHub then
+        -- local Data = Utility.getData( Info.GDFileName )
+    end
 end)
