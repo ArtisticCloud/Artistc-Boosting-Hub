@@ -47,10 +47,7 @@ function ArtsHub.new( Main )
     end 
     print( "Art's Hub Debug: | Account Type: " .. self.AccountType)
 
-    self.RegisteredAlts = {
-        'iArtisticDev' , 
-        'All' , 
-    }
+    self.RegisteredAlts = {}
 
     self.Snitches = { --// Automatically kick out the game if one of these joins
         'xv_nike' , 
@@ -85,10 +82,16 @@ function ArtsHub:LoadData()
     end
     if AccountControlData then
         local n = 1
-        for Account,Values in pairs( AccountControl.Accounts ) do
+        for Account,Values in pairs( AccountControlData.Accounts ) do
             self.RegisteredAlts[n] = Account
             n = n + 1
         end 
+        if #self.RegisteredAlts < Info.MaxAlts then
+            --// fill in the gaps if there are less than 5 total alts //--
+            for i=1,Info.MaxAlts - #self.RegisteredAlts do
+                self.RegisteredAlts[i] = ''
+            end
+        end
     end
 end
 
@@ -114,7 +117,7 @@ function ArtsHub:LoadUI( )
         --// display the registered alts //--
         self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
         for i=1,Info.MaxAlts do
-            local CurrentAlt = self.RegisteredAlts[i]
+            local CurrentAlt = self.RegisteredAlts[i] ~= '' and self.RegisteredAlts[i]
              --// store the element inside of the uielements table so i can change it later //--
             self.UIElements[ 'Alt Label ' .. i ] = self.MainGroupBoxes.LeftOne:AddLabel( '' )
             if CurrentAlt and CurrentAlt:lower() ~= 'all' then
@@ -125,7 +128,7 @@ function ArtsHub:LoadUI( )
             self.UIElements[ 'Alt Remove Button ' .. i] = self.MainGroupBoxes.LeftOne:AddButton( 'Remove Account' , function()
                 --// remove the registered alt here //--
                 local Label = self.UIElements[ 'Alt Label ' .. i ]
-                Label:SetText( 'None' )
+                
             end)
         end
         self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
@@ -206,7 +209,8 @@ function ArtsHub:UIEvents()
         if PlayerName then
             --// Subtract 1 so it doesnt include the "all" section //--
             if #self.RegisteredAlts - 1 >= Info.MaxAlts then
-                Linoria:Notify( 'Alt capacity reached. \n Try deleting an alt' , 10 )
+                Linoria:Notify( 'Alt capacity reached. Try deleting an alt' , 12 )
+                return
             end
             if PlayerName == self.Main then
                 Linoria:Notify( 'Main account cannot be set as alt' , 10 )
@@ -214,21 +218,17 @@ function ArtsHub:UIEvents()
             end
             local Feedback = self.AccountControl:registerAccount( PlayerName , PlayerUserId )
             if Feedback == 'Success' then
-                local ChosenLabel 
-                for i=1,Info.MaxAlts do
-                    print(self.UIElements[ 'Alt Label ' .. i ].Text)
-                    if self.UIElements[ 'Alt Label ' .. i ].Value == 'None' then
-                        ChosenLabel = self.UIElements[ 'Alt Label  .. i']
+                for index,value in pairs(self.RegisteredAlts) do
+                    print( 'INDEX' , index , 'VALUE' , value)
+                    if value == '' then
+                        self.UIElements[ 'Alt Label ' .. index ]:SetText( PlayerName )
+                        self.RegisteredAlts[index] = PlayerName
+                        break
                     end
-                end
-                print(ChosenLabel)
-                if ChosenLabel then
-                    ChosenLabel:SetText( PlayerName )
-                end
+                end 
             end 
         end 
     end)
-
 end 
 
 function ArtsHub:Events()
