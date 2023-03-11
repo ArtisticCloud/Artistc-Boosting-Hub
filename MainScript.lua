@@ -246,5 +246,3 @@ RunService.RenderStepped:Connect(function()
         getgenv().ArtsHub:Update()
     end 
 end)
-
---// tabs //--

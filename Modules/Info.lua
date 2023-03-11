@@ -16,8 +16,9 @@ Info.ACFileTemplate = {
     Accounts = {} , 
 }
 Info.ACAccountData = {
-    'Online' = false , 
-    'Teleporting' = '' , 
+    Online = false , 
+    Teleporting = '' , 
+    CurrentPlace = ''
 }
 
 --// Ingame stuff //--
