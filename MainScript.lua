@@ -24,7 +24,7 @@ local RunService = game:GetService( 'RunService' )
 local Tween = game:GetService( 'TweenService' ) 
 local Storage = game:GetService( 'ReplicatedStorage' )
 
-local Remotes = Storage:WaitForChild( 'Remotes' )
+local Remotes = Storage:WaitForChild( 'Remotes' , 20 )
 local GameEvents = Storage:WaitForChild( 'GameEvents' , 20 )
 
 Linoria:OnUnload(function()
@@ -75,7 +75,7 @@ function ArtsHub.new( Main )
     self:LoadData()
     self:LoadUI()
     self:Events()
-    Linoria:Notify( "Art's Hub Initalized. \nPlease use Khyshub along with this hub, im not making you an auto timer" , 12 )
+    Linoria:Notify( "Art's Hub Initalized. \nPress " .. Info.DefaultKeybind .. ' to toggle' , 12 )
 
     return self 
 end 
@@ -233,10 +233,6 @@ function ArtsHub:LoadUI( )
     Linoria.ToggleKeybind = Options.Toggle_Keybind
 
     --// Register the events once it is created //--
-    self:UIEvents()
-    task.spawn(function()
-        self:Aimbot()
-    end)
 
     --// Managers //--
     ThemeManager:SetLibrary(Linoria)
@@ -249,6 +245,11 @@ function ArtsHub:LoadUI( )
     SaveManager:SetFolder(FolderName .. '/' .. 'Themes')
 
     ThemeManager:ApplyToTab(self.SettingsTab)
+
+    self:UIEvents()
+    task.spawn(function()
+        self:Aimbot()
+    end)
 
     --// Keybinds //--
 end
@@ -285,7 +286,6 @@ function ArtsHub:UIEvents()
     self.UIElements.Boosting:OnChanged(function()
         local Data = Utility.getData( Info.GDFileName )
         if Data then
-            print( "Art's Hub Debug: | New Boosting Value " .. tostring(self.UIElements.Boosting.Value) )
             Data.Boosting = self.UIElements.Boosting.Value 
             Utility.saveData( Info.GDFileName , Data )
         end
@@ -342,13 +342,13 @@ end
 
 --// Check is there is any data under the player //--
 local Data = Utility.getData( Info.GDFileName )
+local AccountControlData = Utility.getData( Info.ACFileName )
+
 if not Data then
     getgenv().ArtsHub = ArtsHub.new()
-else
+elseif Data and AccountControlData and AccountControlData.Accounts[Player.Name] or Data and Data.Main == Player.Name then
     print( "Art's Hub Debug: | Data found, registering hub" )
-    if table.find( Data.Alts , Player.Name ) or Data.Main == Player.Name then 
-        getgenv().ArtsHub = ArtsHub.new( Data.Main )
-    end 
+    getgenv().ArtsHub = ArtsHub.new( Data.Main )
 end
 
 RunService.RenderStepped:Connect(function()
