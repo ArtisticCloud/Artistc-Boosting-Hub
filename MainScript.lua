@@ -229,7 +229,6 @@ function ArtsHub:UIEvents()
                 return
             end
             local Feedback = self.AccountControl:registerAccount( PlayerName , PlayerUserId )
-            print(#self.RegisteredAlts)
             if Feedback == 'Success' then
                 for index,value in pairs(self.RegisteredAlts) do
                     if value == '' then
