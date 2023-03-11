@@ -11,6 +11,7 @@ local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
 
 local Player = game:GetService( 'Players' ).LocalPlayer
+local Mouse = Player:GetMouse()
 
 --// File data //--
 local FolderName = "Art's Hub"
@@ -260,7 +261,8 @@ function ArtsHub:Unload()
 end 
 
 function ArtsHub:Update()
-
+    --// reset the mouse icon //--
+    Mouse.Icon = ''
 end
 
 --// Check is there is any data under the player //--

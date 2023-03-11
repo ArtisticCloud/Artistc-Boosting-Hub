@@ -44,7 +44,7 @@ function AccountControl:unregisterAccount( Username , UserId )
     if AccountControlData then
         if AccountControlData.Accounts[Username] then
             AccountControlData.Accounts[Username] = nil
-            Utility.saveData( Utility.ACFileName , AccountControlData )
+            Utility.saveData( Info.ACFileName , AccountControlData )
             return 'Success'
         else
             self.Linoria:Notify( Username .. ' is not registered..wyd' , 12 )
