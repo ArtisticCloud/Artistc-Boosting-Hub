@@ -25,10 +25,12 @@ Info.ACAccountData = {
 
 --// Ingame stuff //--
 Info.Places = {
-    Park = 0 , 
-    RecLobby = 0,
-    Plaza = 0 ,
-    MainMenu = 0,
+    Park = 10107441386 , 
+    RecLobby = 10207014047,
+    Plaza = 8448881160 ,
+    MainMenu = 7899881670,
+    RecQ = 10217709305 , 
+    RecGame = 0 ,
 }
 
 Info.CommandTypes = {

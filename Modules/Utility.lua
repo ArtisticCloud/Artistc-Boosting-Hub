@@ -69,6 +69,15 @@ function Utility.teleportTo( Place , Slot )
     return 'Invalid Plce'
 end
 
+function Utility.findOpenIndex( Table )
+    for index,item in pairs(Table) do
+        if item == ''  then
+            return index,item
+        end
+        continue
+    end
+end 
+
 function Utility.tableLen( Table )
     local n = 0
     for _,item in pairs(Table) do
