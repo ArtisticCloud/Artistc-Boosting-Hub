@@ -58,6 +58,7 @@ function ArtsHub.new( Main )
         'luadimer' , 
         'coolius' , 
         'ashleydaballer' , 
+        'zevroo' , 
     }
 
     self.MainGroupBoxes = {}
@@ -89,8 +90,10 @@ function ArtsHub:LoadData()
         end 
         if #self.RegisteredAlts < Info.MaxAlts then
             --// fill in the gaps if there are less than 5 total alts starting from n //--
-            for i=n-1,Info.MaxAlts - #self.RegisteredAlts do
-                self.RegisteredAlts[i] = ''
+            for i=1,Info.MaxAlts do
+                if not self.RegisteredAlts[i] then
+                    self.RegisteredAlts[i] = ''
+                end
             end
         end
         n = 0
@@ -126,11 +129,10 @@ function ArtsHub:LoadUI( )
         self.MainGroupBoxes.LeftOne:AddLabel( 'Configured Alts:')
         --// display the registered alts //--
         self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
-        for i=1,Info.MaxAlts do
-            local CurrentAlt = self.RegisteredAlts[i] ~= '' and self.RegisteredAlts[i]
+        for i,CurrentAlt in pairs( self.RegisteredAlts ) do
              --// store the element inside of the uielements table so i can change it later //--
             self.UIElements[ 'Alt Label ' .. i ] = self.MainGroupBoxes.LeftOne:AddLabel( '' )
-            if CurrentAlt and CurrentAlt:lower() ~= 'all' then
+            if CurrentAlt and CurrentAlt ~= '' and CurrentAlt:lower() ~= 'all' then
                 self.UIElements[ 'Alt Label ' .. i ]:SetText( self.RegisteredAlts[i] )
             else
                 self.UIElements[ 'Alt Label ' .. i ]:SetText( 'None' )
@@ -138,12 +140,14 @@ function ArtsHub:LoadUI( )
             self.UIElements[ 'Alt Remove Button ' .. i] = self.MainGroupBoxes.LeftOne:AddButton( 'Remove Account' , function()
                 --// remove the registered alt here //--
                 local Label = self.UIElements[ 'Alt Label ' .. i ]
-                if CurrentAlt ~= '' then
-                    local Response = self.AccountControl:unregisterAccount( CurrentAlt )
+                if self.RegisteredAlts[i] ~= '' then
+                    local Response = self.AccountControl:unregisterAccount( self.RegisteredAlts[i] )
                     if Response == 'Success' then
                         --// update the labels and the data //--
+                        local Label = self.UIElements[ 'Alt Label ' .. i ]
                         Label:SetText( 'None' ) 
                         self.RegisteredAlts[i] = ''
+                        Options[ 'Account Dropdown' ]:SetValue(AccountControl)
                     end
                 end
             end)
@@ -179,7 +183,6 @@ function ArtsHub:LoadUI( )
         self.MainGroupBoxes.RightOne = self.MainTab:AddRightGroupbox( 'Account Control' )
         self.MainGroupBoxes.RightOne:AddDivider()
         self.MainGroupBoxes.RightOne:AddDropdown( 'Account Dropdown' , {
-            Multi = true , 
             Values = self.RegisteredAlts , 
             Text = 'Account' , 
         })
@@ -230,16 +233,32 @@ function ArtsHub:UIEvents()
                 return
             end
             local Feedback = self.AccountControl:registerAccount( PlayerName , PlayerUserId )
-            if Feedback == 'Success' then
-                for index,value in pairs(self.RegisteredAlts) do
+            local function ChangeUserIndex()
+                for index=1,#self.RegisteredAlts do
+                    local value = self.RegisteredAlts[index]
                     if value == '' then
                         self.UIElements[ 'Alt Label ' .. index ]:SetText( PlayerName )
                         self.RegisteredAlts[index] = PlayerName
                         break
                     end
-                end 
+                end
+                Options[ 'Account Dropdown' ]:SetValue(AccountControl)
+            end
+            if Feedback == 'Success' then
+                ChangeUserIndex()
             end 
+        elseif not PlayerName then
+            Linoria:Notify( 'Invalid Name' , 10 )
         end 
+    end)
+
+    self.UIElements.Boosting:OnChanged(function()
+        local Data = Utility.getData( Info.GDFileName )
+        if Data then
+            print( "Art's Hub Debug: | New Boosting Value " .. tostring(self.UIElements.Boosting.Value) )
+            Data.Boosting = self.UIElements.Boosting.Value 
+            Utility.saveData( Info.GDFileName , Data )
+        end
     end)
 end 
 
