@@ -74,7 +74,7 @@ function ArtsHub.new( Main )
     self.UIElements = {}
     self.Linoria = Linoria
     self.AccountControl = AccountControl.new( self )
-    self.Rec = Rec.new( self , self.Window )
+    self.RecTab = nil
 
     self:LoadData()
     self:LoadUI()
@@ -186,7 +186,6 @@ function ArtsHub:LoadUI()
             Text = 'Account' , 
         })
         --// Command Buttons that alts will do //--
-        self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
         self.MainGroupBoxes.RightOne:AddDropdown( 'OnBall_Dropdown' , {
             Values = Info.CommandTypes.OnBall ,
             Text = 'Onball Command'
@@ -206,7 +205,6 @@ function ArtsHub:LoadUI()
             Text = '' , 
             Multi = true 
         })
-        self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
         self.MainGroupBoxes.RightOne:AddLabel( 'Extra Commands' ) 
         self.MainGroupBoxes.RightOne:AddButton( 'Teleport To Main' , function()
             
@@ -244,6 +242,9 @@ function ArtsHub:LoadUI()
         Text = 'Remove NameTags' , 
     })
     --------------------------
+
+    --// load rec tab //--
+    self.Rec = Rec.new( self , self.RecTab )
 
     --// Settings right group box //--
     self.SettingsGroupBoxes.RightOne = self.SettingsTab:AddRightGroupbox( 'Extra Settings' )
