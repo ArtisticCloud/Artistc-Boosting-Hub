@@ -50,6 +50,17 @@ function Rec:LoadUI()
             self.Linoria:Notify( 'Invalid Main' , 8 )
         end
     end)
+    self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Invite Alts' , function()
+        local Accounts = Utility.getData( Info.ACFileName )
+        if Accounts then 
+            for AccountName , AccountData in pairs(Accounts.Accounts) do
+                if not game.Players:FindFirstChild( AccountName ) then
+                    self.Linoria:Notify( AccountName .. ' is not in your server' , 9 )
+                end
+            end
+            return true 
+        end 
+    end)
 end
 
 function Rec:Events()
