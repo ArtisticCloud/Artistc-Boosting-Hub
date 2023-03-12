@@ -1,4 +1,4 @@
-local Rec = {}
+
 
 print( 'was called here too' )
 local Utility = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Utility.lua"),true))()
