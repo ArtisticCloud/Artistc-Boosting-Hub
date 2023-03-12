@@ -3,7 +3,7 @@ local Rec = {}
 local Player = game.Players.LocalPlayer 
 local Storage = game:GetService( 'ReplicatedStorage' )
 
-local Remotes = Storage:WaitForChild( 'Remotes' ) 
+local Remotes = Storage:WaitForChild( 'Remotes' , 20 )
 
 function Rec.new( Hub , Window )
     local self = setmetatable({},{
