@@ -3,7 +3,7 @@ local Utility = loadstring(game:HttpGet(("https://raw.githubusercontent.com/Arti
 local Info = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Info.lua"),true))()
 local Commands = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Commands.lua'),true))()
 local AccountControl = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/AccountControl.lua'),true))()
-local Rec = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Rec.lua'),true))()
+local Rec = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/RecCenter.lua'),true))()
 
 print( "Art's Hub Debug: | Modules Loaded" )
 local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
