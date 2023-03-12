@@ -11,8 +11,7 @@ Info.GDFileTemplate = {
     Main = '' , 
     Alts = {} , 
     TeleportingTo = '' , 
-    Boosting = false ,
-    Rec = {LobbyIDs={},Partys={}}
+    Rec = {LobbyID1=nil,LobbyID2=nil,Partys={}}
 }
 Info.ACFileTemplate = {
     Accounts = {} , 
@@ -44,6 +43,7 @@ Info.ACAccountData = {
     CurrentTasks = {OnBall='',OffBall=''} ,
     TaskData = {OnBall={},OffBall={}} , 
     CreatingCode = false , 
+    Rec = {PartyToJoin=nil}
 }
 
 --// Ingame stuff //--
