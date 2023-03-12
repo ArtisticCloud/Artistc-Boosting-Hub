@@ -43,6 +43,7 @@ Info.ACAccountData = {
     CurrentPlace = '' , 
     CurrentTasks = {OnBall='',OffBall=''} ,
     TaskData = {OnBall={},OffBall={}} , 
+    CreatingCode = false , 
 }
 
 --// Ingame stuff //--
