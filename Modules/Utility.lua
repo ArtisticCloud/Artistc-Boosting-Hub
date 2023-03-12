@@ -44,6 +44,13 @@ function Utility.hasBall( Player )
     return Player.Parent and Player.Character and Player.Character:FindFirstChild( 'ball.weld' )
 end  
 
+function Utility.isValidAlt( Username )
+    local AccountControlData = Utility.getData( Info.ACFileName )
+    if AccountControlData and AccountControlData.Accounts[Username] then
+        return AccountControlData.Accounts[Username] , AccountControlData
+    end
+end
+
 function Utility.followPlayer( Player , UserId , UseData )
     local CurrentPlace = Utility.findIndexFromValue( Info.Places , game.PlaceId )
     if CurrentPlace then

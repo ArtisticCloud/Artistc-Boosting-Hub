@@ -18,6 +18,8 @@ function Rec.new( Hub , Window )
     self.RecTab = Window:AddTab( 'Rec.' )
     self.UIElements = {}
 
+    self.LobbyGroupBox = nil
+
     self:LoadUI()
     self:Events()
 
@@ -25,8 +27,20 @@ function Rec.new( Hub , Window )
 end
 
 function Rec:LoadUI()
-    self.RecTab:AddLeftGroupbox( 'Rec. Lobby' )
-
+    self.LobbyGroupBox = self.RecTab:AddLeftGroupbox( 'Rec. Lobby' )
+    self.UIElements['Other_Main'] = self.LobbyGroupBox:AddDropdown( 'Other Main' ,  {
+        Text = 'Other Main' , 
+    })
+    self.UIElements.MainPartyCode = self.LobbyGroupBox:AddLabel( 'Main Party: None' )
+    self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
+    self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
+        local OtherMain = self.UIElements.Other_Main.Value and Utility.isValidAlt( self.UIElements.Other_Main.Value ) then
+        if OtherMain then
+            print( 'create code here' )
+        elseif not OtherMain then
+            self.Linoria:Notify( 'Invalid Main' , 8 )
+        end
+    end)
 end
 
 function Rec:Events()
@@ -50,7 +64,11 @@ end
 function Rec:Update()
     local RecData = Utility.getData( Info.GDFileName )
     if RecData then
-    
+        
+    end
+    local AccountControlData = Utility.getData( Info.ACFileName )
+    if AccountControlData then
+        self.UIElements.Other_Main:SetValue( AccountControlData.Accounts )
     end
 end
 
