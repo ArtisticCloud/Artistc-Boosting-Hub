@@ -16,11 +16,32 @@ Info.GDFileTemplate = {
 Info.ACFileTemplate = {
     Accounts = {} , 
 }
+
+Info.Snitches = { --// Automatically kick out the game if one of these joins
+    'gunchowda' , 
+    'isitjokes' , 
+    'ljokes' ,
+    'xv_nike' , 
+    'errorchekz' ,
+    'superfluousbacon' , 
+    'zornage' , 
+    'luadimer' , 
+    'cooiius' , 
+    'ashleydaballer' , 
+    'zevroo' , 
+    'kiricali' ,
+    'rrhen101' , 
+    'woodall25' ,
+    'apathedic' ,
+    'applecow14' , 
+}
+
 Info.ACAccountData = {
     Online = false , 
     Teleporting = '' , 
     CurrentPlace = '' , 
-    CurrentTask = {OnBall='',OffBall=''} ,
+    CurrentTasks = {OnBall='',OffBall=''} ,
+    TaskData = {OnBall={},OffBall={}} , 
 }
 
 --// Ingame stuff //--
@@ -37,9 +58,15 @@ Info.CommandTypes = {
     OnBall = {
         'Auto Shoot' , 
         'Auto Pass' , 
+        'Auto Post Fade' , 
+        'Auto Post Hook' , 
+        'Auto Off Dribble' ,
+        'Auto Acro' , 
+        'Auto Post Tech' ,  
     } , 
     OffBall = {
-        'Auto Guard'
+        'Auto Guard' , 
+        'Auto Post Anchor' , 
     } , 
 }
 
