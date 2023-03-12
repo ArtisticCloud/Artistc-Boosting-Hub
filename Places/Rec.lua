@@ -19,7 +19,7 @@ function Rec.new( Hub )
         end,
     })
 
-    self.RecTab = self.Window:AddTab( 'Rec.' )
+    self.RecTab = Window:AddTab( 'Rec.' )
     self.UIElements = {}
 
     self.LobbyGroupBox = nil
