@@ -152,7 +152,7 @@ function ArtsHub:LoadUI()
                 end
             end)
         end
-        self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
+        self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ' )
         self.MainGroupBoxes.LeftOne:AddInput( 'Add_Alt_Input' , {
             Default = '' , 
             Finished = true , 
@@ -186,6 +186,7 @@ function ArtsHub:LoadUI()
             Text = 'Account' , 
         })
         --// Command Buttons that alts will do //--
+        self.MainGroupBoxes.RightOne:AddLabel( ' ------------------------------   ' )
         self.MainGroupBoxes.RightOne:AddDropdown( 'OnBall_Dropdown' , {
             Values = Info.CommandTypes.OnBall ,
             Text = 'Onball Command'
@@ -205,6 +206,7 @@ function ArtsHub:LoadUI()
             Text = '' , 
             Multi = true 
         })
+        self.MainGroupBoxes.RightOne:AddLabel( ' ------------------------------   ' )
         self.MainGroupBoxes.RightOne:AddLabel( 'Extra Commands' ) 
         self.MainGroupBoxes.RightOne:AddButton( 'Teleport To Main' , function()
             
