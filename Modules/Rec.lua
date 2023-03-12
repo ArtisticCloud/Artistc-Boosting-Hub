@@ -1,6 +1,6 @@
 local Rec = {}
 
-local Player = game.Players.LocaPlayer 
+local Player = game.Players.LocalPlayer 
 local Storage = game:GetService( 'ReplicatedStorage' )
 
 local Remotes = Storage:WaitForChild( 'Remotes' ) 
