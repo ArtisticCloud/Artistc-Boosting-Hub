@@ -8,7 +8,7 @@ local Storage = game:GetService( 'ReplicatedStorage' )
 
 local Remotes = Storage:WaitForChild( 'Remotes' , 20 )
 
-function Rec.new( Hub , Window )
+function Rec.new( Hub , RecTab )
     print( 'was called' )
     local self = setmetatable({},{
         __index = function( Table , Index , Value )
@@ -19,7 +19,7 @@ function Rec.new( Hub , Window )
         end,
     })
 
-    self.RecTab = Window:AddTab( 'Rec.' )
+    self.RecTab = RecTab
     self.UIElements = {}
 
     self.LobbyGroupBox = nil
