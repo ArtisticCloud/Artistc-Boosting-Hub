@@ -386,9 +386,6 @@ end
 
 function ArtsHub:Update()
     --// reset the mouse icon //--
-    if self.Rec and getmetatable(self.Rec) then
-        self.Rec:Update()
-    end
     UIS.MouseIconEnabled = true
 end
 
