@@ -41,7 +41,6 @@ function Rec:LoadUI()
         Values = {} , 
         Text = 'Other Main' , 
     })
-    print( 'passed 2' )
     self.UIElements.MainPartyCode = self.LobbyGroupBox:AddLabel( 'Main Party: None' )
     self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
     self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
