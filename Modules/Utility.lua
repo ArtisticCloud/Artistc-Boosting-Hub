@@ -73,7 +73,7 @@ function Utility.teleportTo( Place , Slot )
         end
         return true
     end
-    return 'Invalid Plce'
+    return 'Invalid Place'
 end
 
 function Utility.findOpenIndex( Table )
@@ -88,7 +88,7 @@ end
 function Utility.tableLen( Table )
     local n = 0
     for _,item in pairs(Table) do
-        n += 1
+        n = n + 1
     end
     return n
 end
