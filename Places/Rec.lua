@@ -135,17 +135,15 @@ function Rec:AltEvents( AccountData , AccountControlData )
         end 
     end
     if AccountData.PartyToJoin then
-
-        Utility.saveData(  )
+        Remotes.Parties:InvokeServer( 'Leave' ) 
+        Remotes.Parties:InvokeServer( 'Join' , tostring(AccountData.PartyToJoin) )
+        AccountControlData.Accounts[Player.Name].PartyToJoin = nil 
+        Utility.saveData( Info.ACFileName , AccountControlData )
     end
     return true
 end
 
 function Rec:Update()
-    local RecData = Utility.getData( Info.GDFileName )
-    if RecData then
-        
-    end
     local AccountControlData = Utility.getData( Info.ACFileName )
     if AccountControlData then
         self.UIElements.Other_Main:SetValue( AccountControlData.Accounts )
