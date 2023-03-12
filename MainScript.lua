@@ -3,6 +3,7 @@ local Utility = loadstring(game:HttpGet(("https://raw.githubusercontent.com/Arti
 local Info = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Info.lua"),true))()
 local Commands = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Commands.lua'),true))()
 local AccountControl = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/AccountControl.lua'),true))()
+local Rec = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Rec.lua'),true))()
 
 print( "Art's Hub Debug: | Modules Loaded" )
 local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
@@ -46,9 +47,14 @@ function ArtsHub.new( Main )
     })
 
     self.Main = Main
+    self.Window = Linoria:CreateWindow({
+        Title = "Art's Boosting Hub" , 
+        AutoShow = true , 
+    })
 
     self.MainTab = nil 
     self.SettingsTab = nil 
+    self.RecTab = nil
     self.Data = {}
 
     if Main == nil or Main == '' then
@@ -63,11 +69,12 @@ function ArtsHub.new( Main )
 
     self.MainGroupBoxes = {}
     self.SettingsGroupBoxes = {}
-    self.RecGroupBox = {}
+    self.RecGroupBoxes = {}
 
     self.UIElements = {}
     self.Linoria = Linoria
     self.AccountControl = AccountControl.new( self )
+    self.Rec = Rec.new( self , self.Window  )
 
     self:LoadData()
     self:LoadUI()
@@ -97,16 +104,12 @@ function ArtsHub:LoadData()
         return true
     else
         --// create new account control data
+        Linoria:Notify( 'Creating new Account Control Data..' , 8 )
         Utility.saveData( Info.ACFileName , Info.ACFileTemplate )
     end
 end
 
-function ArtsHub:LoadUI( )
-   self.Window = Linoria:CreateWindow({
-        Title = "Art's Boosting Hub" , 
-        AutoShow = true , 
-    })
-
+function ArtsHub:LoadUI()
     --// Load Tabs //--
     self.MainTab = self.Window:AddTab( 'Main' ) 
     self.RecTab = self.Window:AddTab( 'Rec.' )
@@ -240,6 +243,7 @@ function ArtsHub:LoadUI( )
     self.UIElements.RemoveTags = self.MainGroupBoxes.LeftTwo:AddToggle( 'Remove NameTags' , {
         Text = 'Remove NameTags' , 
     })
+    --------------------------
 
     --// Settings right group box //--
     self.SettingsGroupBoxes.RightOne = self.SettingsTab:AddRightGroupbox( 'Extra Settings' )
