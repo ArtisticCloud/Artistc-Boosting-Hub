@@ -75,7 +75,7 @@ function ArtsHub.new( Main )
     self.UIElements = {}
     self.Linoria = Linoria
     self.AccountControl = AccountControl.new( self )
-    self.Rec = Rec.new( self )
+    self.Rec = Rec.new( self , self.Window )
 
     self:LoadData()
     self:LoadUI()
