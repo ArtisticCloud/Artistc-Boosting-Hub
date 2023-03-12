@@ -5,6 +5,7 @@ local Info = loadstring(game:HttpGet(("https://raw.githubusercontent.com/Artisti
 local Commands = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Commands.lua'),true))()
 local AccountControl = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/AccountControl.lua'),true))()
 
+loadstring(game:HttpGet( ('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Places/Rec.lua') ))
 print( "Art's Hub Debug: | Modules Loaded" )
 local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
 local Linoria = loadstring(game:HttpGet(repo .. 'Library.lua'))()
@@ -74,7 +75,7 @@ function ArtsHub.new( Main )
     self.UIElements = {}
     self.Linoria = Linoria
     self.AccountControl = AccountControl.new( self )
-    self.Rec = Rec.new( self , self.Window  )
+    self.Rec = Rec.new( self )
 
     self:LoadData()
     self:LoadUI()
