@@ -32,6 +32,12 @@ Linoria:OnUnload(function()
     Linoria.Unloaded = true
 end)
 
+local VirtualUser = game:GetService('VirtualUser')
+Player.Idled:Connect(function()
+    VirtualUser:CaptureController() 
+    VirtualUser:ClickButton2(Vector2.new()) 
+end)
+
 local ArtsHub = {}
 
 function ArtsHub.new( Main )
@@ -89,6 +95,9 @@ function ArtsHub:LoadData()
             end
         end
         return true
+    else
+        --// create new account control data
+        Utility.saveData( Info.ACFileName , Info.ACFileTemplate )
     end
 end
 
@@ -174,20 +183,32 @@ function ArtsHub:LoadUI( )
             Text = 'Account' , 
         })
         --// Command Buttons that alts will do //--
-        self.MainGroupBoxes.RightOne:AddLabel( 'OnBall' ) 
-        for _,Type in pairs(Info.CommandTypes.OnBall) do
-            self.UIElements[ Type .. ' Toggle' ] = self.MainGroupBoxes.RightOne:AddToggle( Type , {
-                Text = Type 
-            })
-        end
-        self.MainGroupBoxes.RightOne:AddLabel( 'OffBall' ) 
-        for _,Type in pairs(Info.CommandTypes.OffBall) do
-            self.UIElements[ Type .. ' Toggle' ] = self.MainGroupBoxes.RightOne:AddToggle( Type , {
-                Text = Type 
-            })
-        end
-        self.MainGroupBoxes.RightOne:AddLabel( 'Commands' ) 
+        self.MainGroupBoxes.RightOne:AddDivider()
+        self.MainGroupBoxes.RightOne:AddDropdown( 'OnBall_Dropdown' , {
+            Values = Info.CommandTypes.OnBall ,
+            Text = 'Onball Command'
+        })
+        self.MainGroupBoxes.RightOne:AddDropdown( 'OnBall_Data' , {
+            Values = {} ,
+            Text = '' , 
+            Multi = true , 
+        })
+        self.MainGroupBoxes.RightOne:AddDivider()
+        self.MainGroupBoxes.RightOne:AddDropdown( 'OffBall_Dropdown' , {
+            Values = Info.CommandTypes.OffBall ,
+            Text = 'Offball Command'
+        })
+        self.MainGroupBoxes.RightOne:AddDropdown( 'OffBall_Data' , {
+            Values = {} ,
+            Text = '' , 
+            Multi = true 
+        })
+        self.MainGroupBoxes.RightOne:AddDivider()
+        self.MainGroupBoxes.RightOne:AddLabel( 'Extra Commands' ) 
         self.MainGroupBoxes.RightOne:AddButton( 'Teleport To Main' , function()
+            
+        end)
+        self.MainGroupBoxes.RightOne:AddButton( 'Kick Account' , function()
             
         end)
     end 
@@ -306,7 +327,7 @@ function ArtsHub:UIEvents()
         local AccountControlData = Utility.getData( Info.ACFileName )
         if AccountControlData and AccountControlData.Accounts[NewValue] then
             local AccountData = AccountControlData.Accounts[NewValue]
-
+            Options.OnBall_Dropdown:SetValue(nil)
         else
             Linoria:Notify( 'Could not find data for ' .. NewValue )
         end

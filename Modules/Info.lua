@@ -12,6 +12,7 @@ Info.GDFileTemplate = {
     Alts = {} , 
     TeleportingTo = '' , 
     Boosting = false ,
+    Rec = {LobbyIDs={},Partys={}}
 }
 Info.ACFileTemplate = {
     Accounts = {} , 
@@ -72,11 +73,11 @@ Info.CommandTypes = {
 
 Info.AimbotSliderSettings = {
     Min = 0.25 ,
-    Max = 0.85 
+    Max = 0.85 ,
 }
 
 --// UI Stuff //--
-Info.DefaultKeybind = 'Left Alt'
+Info.DefaultKeybind = 'LeftAlt'
 
 --// Misc. //--
 
