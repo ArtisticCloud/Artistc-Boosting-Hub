@@ -32,7 +32,6 @@ end
 
 function Rec:LoadUI()
     self.LobbyGroupBox = self.RecTab:AddLeftGroupbox( 'Rec. Lobby' )
-    print( 'passed' )
     self.UIElements.RecBoosting = self.LobbyGroupBox:AddToggle( 'Rec_Boosting' , {
         Text = 'Rec Boosting' , 
         Tooltip = 'doesnt do anything yet'
@@ -54,7 +53,7 @@ function Rec:LoadUI()
 end
 
 function Rec:Events()
-    
+    self.UIElements.Other_Main
 end
 
 function Rec:createParty()
