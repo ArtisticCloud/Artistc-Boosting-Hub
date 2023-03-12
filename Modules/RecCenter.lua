@@ -9,6 +9,7 @@ local Storage = game:GetService( 'ReplicatedStorage' )
 local Remotes = Storage:WaitForChild( 'Remotes' , 20 )
 
 function Rec.new( Hub , Window )
+    print( 'was called' )
     local self = setmetatable({},{
         __index = function( Table , Index , Value )
             if not Rec[Index] then
