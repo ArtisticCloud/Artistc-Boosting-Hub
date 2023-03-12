@@ -31,9 +31,16 @@ end
 
 function Rec:LoadUI()
     self.LobbyGroupBox = self.RecTab:AddLeftGroupbox( 'Rec. Lobby' )
+    print( 'passed' )
+    self.UIElements.RecBoosting = self.LobbyGroupBox:AddToggle( 'Rec Boosting' , function()
+        Text = 'Rec Boosting'
+        Tooltip = 'will auto inject when in rec lobby to safely join the same match'
+    end)
     self.UIElements['Other_Main'] = self.LobbyGroupBox:AddDropdown( 'Other Main' ,  {
+        Values = {} , 
         Text = 'Other Main' , 
     })
+    print( 'passed 2' )
     self.UIElements.MainPartyCode = self.LobbyGroupBox:AddLabel( 'Main Party: None' )
     self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
     self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
@@ -48,7 +55,7 @@ function Rec:LoadUI()
 end
 
 function Rec:Events()
-
+    
 end
 
 function Rec:createParty()
