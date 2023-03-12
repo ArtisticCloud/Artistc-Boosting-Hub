@@ -1,6 +1,5 @@
 local Rec = {}
 
-print( 'was called here too' )
 local Utility = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Utility.lua"),true))()
 local Info = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Info.lua"),true))()
 
@@ -9,7 +8,7 @@ local Storage = game:GetService( 'ReplicatedStorage' )
 
 local Remotes = Storage:WaitForChild( 'Remotes' , 20 )
 
-function Rec.new( Hub , Window )
+function Rec.new( Hub )
     print( 'was called' )
     local self = setmetatable({},{
         __index = function( Table , Index , Value )
@@ -20,14 +19,13 @@ function Rec.new( Hub , Window )
         end,
     })
 
-    self.RecTab = Window:AddTab( 'Rec.' )
+    self.RecTab = self.Window:AddTab( 'Rec.' )
     self.UIElements = {}
 
-    -- self.LobbyGroupBox = nil
+    self.LobbyGroupBox = nil
 
-    -- print( 'working' )
-    -- self:LoadUI()
-    -- self:Events()
+    self:LoadUI()
+    self:Events()
 
     return self
 end
