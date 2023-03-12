@@ -82,12 +82,15 @@ function Rec:LoadUI()
 end
 
 function Rec:Events()
-    self.UIElements.Other_Main:OnChanged(function()
-        local AccountData = Utility.isValidAlt( self.UIElements.Other_Main.Value )
-        if AccountData then
-            -- self:SetPartyCodes()
-        end
-    end)
+    if self.UIElements.Other_Main then
+        self.UIElements.Other_Main:OnChanged(function()
+            local AccountData = Utility.isValidAlt( self.UIElements.Other_Main.Value )
+            if AccountData then
+                -- self:SetPartyCodes()
+            end
+        end)
+    end
+    return true
 end
 
 function Rec:createPartyCodes( OtherMain )
@@ -145,6 +148,7 @@ end
 
 function Rec:Update()
     local AccountControlData = Utility.getData( Info.ACFileName )
+    local GeneralData = Utility.getData( Info.GDFileName )
     if AccountControlData then
         self.UIElements.Other_Main:SetValue( AccountControlData.Accounts )
     end
@@ -154,10 +158,15 @@ function Rec:Update()
             self:AltEvents()
         end
     end
+    if GeneralData then
+        local MainPartyCode , AltPartyCode = 
+        self.UIElements.MainPartyCode:SetText(   )
+    end
     return true 
 end
 
 game:GetService( 'RunService' ).RenderStepped:Connect(function()
+    print( 'working' , RecClass )
     if RecClass and getmetatable( RecClass ) then
         RecClass:Update()
     end
