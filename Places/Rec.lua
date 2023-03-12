@@ -54,15 +54,19 @@ end
 
 function Rec:Events()
     self.UIElements.Other_Main:OnChanged(function()
-        local Data = Utility.getData( Info.GDFileName )
-        if Data then
-            
+        local AccountData = Utility.isValidAlt( self.UIElements.Other_Main.Value )
+        if AccountData then
+            -- self:SetPartyCodes()
         end
     end)
 end
 
-function Rec:SetPartyCodes( Code1 , Code2  )
-
+function Rec:SetPartyCodes( User1 , Code1  )
+    local GeneralData = Utility.getData( Info.GDFileName )
+    if GeneralData then
+        GeneralData.Parties[User1] = Code1 
+        Utility.saveData( GeneralData )
+    end
 end     
 
 function Rec:createParty()
