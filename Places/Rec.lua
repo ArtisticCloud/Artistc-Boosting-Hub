@@ -53,8 +53,17 @@ function Rec:LoadUI()
 end
 
 function Rec:Events()
-    self.UIElements.Other_Main
+    self.UIElements.Other_Main:OnChanged(function()
+        local Data = Utility.getData( Info.GDFileName )
+        if Data then
+            
+        end
+    end)
 end
+
+function Rec:SetPartyCodes( Code1 , Code2  )
+
+end     
 
 function Rec:createParty()
     return Remotes.Parties:InvokeServer( 'Start' )
@@ -77,7 +86,7 @@ function Rec:Update()
     end
     local AccountControlData = Utility.getData( Info.ACFileName )
     if AccountControlData then
-        self.UIElements.Other_Main:SetValue( AccountControlData.Accounts )
+        self.UIElements.Other_Main:SetValue( AccountControlData )
     end
 end
 
