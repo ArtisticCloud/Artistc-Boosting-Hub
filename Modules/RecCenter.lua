@@ -37,6 +37,7 @@ function Rec:LoadUI()
     self.UIElements.MainPartyCode = self.LobbyGroupBox:AddLabel( 'Main Party: None' )
     self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
     self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
+        print('passed')
         local OtherMain = self.UIElements.Other_Main.Value and Utility.isValidAlt( self.UIElements.Other_Main.Value ) then
         if OtherMain then
             print( 'create code here' )
