@@ -33,9 +33,9 @@ end
 function Rec:LoadUI()
     self.LobbyGroupBox = self.RecTab:AddLeftGroupbox( 'Rec. Lobby' )
     print( 'passed' )
-    self.UIElements.RecBoosting = self.LobbyGroupBox:AddToggle( 'Rec Boosting' , {
-        Text = 'Rec Boosting'
-        Tooltip = 'will auto inject when in rec lobby to safely join the same match'
+    self.UIElements.RecBoosting = self.LobbyGroupBox:AddToggle( 'Rec_Boosting' , {
+        Text = 'Rec Boosting' , 
+        Tooltip = 'doesnt do anything yet'
     })
     self.UIElements['Other_Main'] = self.LobbyGroupBox:AddDropdown( 'Other Main' ,  {
         Values = {} , 
