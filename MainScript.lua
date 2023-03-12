@@ -51,22 +51,13 @@ function ArtsHub.new( Main )
         self.AccountType = (self.Main == Player.Name and 'Main') or 'Alt'
     end 
     print( "Art's Hub Debug: | Account Type: " .. self.AccountType)
+    self.Commands = self.AccountType == 'Alt' and Commands.new( self ) or nil
 
     self.RegisteredAlts = {}
 
-    self.Snitches = { --// Automatically kick out the game if one of these joins
-        'xv_nike' , 
-        'errorchekz' ,
-        'superfluousbacon' , 
-        'zornage' , 
-        'luadimer' , 
-        'coolius' , 
-        'ashleydaballer' , 
-        'zevroo' , 
-    }
-
     self.MainGroupBoxes = {}
     self.SettingsGroupBoxes = {}
+    self.RecGroupBox = {}
 
     self.UIElements = {}
     self.Linoria = Linoria
@@ -92,19 +83,12 @@ function ArtsHub:LoadData()
             self.RegisteredAlts[n] = Account
             n = n + 1
         end 
-        if #self.RegisteredAlts < Info.MaxAlts then
-            --// fill in the gaps if there are less than 5 total alts starting from n //--
-            for i=1,Info.MaxAlts do
-                if not self.RegisteredAlts[i] then
-                    self.RegisteredAlts[i] = ''
-                end
+        for i=1,Info.MaxAlts do
+            if not self.RegisteredAlts[i] then
+                self.RegisteredAlts[i] = ''
             end
         end
-        n = 0
-    elseif not AccountControlData then
-        for i=1,Info.MaxAlts do
-            self.RegisteredAlts[i] = ''
-        end
+        return true
     end
 end
 
@@ -116,6 +100,7 @@ function ArtsHub:LoadUI( )
 
     --// Load Tabs //--
     self.MainTab = self.Window:AddTab( 'Main' ) 
+    self.RecTab = self.Window:AddTab( 'Rec.' )
     self.SettingsTab = self.Window:AddTab( 'Settings' )
 
     --// Group Boxes //--
@@ -142,7 +127,6 @@ function ArtsHub:LoadUI( )
                 self.UIElements[ 'Alt Label ' .. i ]:SetText( 'None' )
             end 
             self.UIElements[ 'Alt Remove Button ' .. i] = self.MainGroupBoxes.LeftOne:AddButton( 'Remove Account' , function()
-                --// remove the registered alt here //--
                 local Label = self.UIElements[ 'Alt Label ' .. i ]
                 if self.RegisteredAlts[i] ~= '' then
                     local Response = self.AccountControl:unregisterAccount( self.RegisteredAlts[i] )
@@ -157,7 +141,6 @@ function ArtsHub:LoadUI( )
             end)
         end
         self.MainGroupBoxes.LeftOne:AddLabel( ' ------------------------------   ')
-
         self.MainGroupBoxes.LeftOne:AddInput( 'Add_Alt_Input' , {
             Default = '' , 
             Finished = true , 
@@ -175,7 +158,7 @@ function ArtsHub:LoadUI( )
                 local NewDataSet = Info.GDFileTemplate
                 NewDataSet.Main = Player.Name
                 self.AccountType = Player.Name 
-                --// Resave the data and reload the ui //--
+                --// Resave the data and unload the ui //--
                 Utility.saveData( Info.GDFileName , NewDataSet )
                 Linoria:Unload()
             end
@@ -191,26 +174,38 @@ function ArtsHub:LoadUI( )
             Text = 'Account' , 
         })
         --// Command Buttons that alts will do //--
+        self.MainGroupBoxes.RightOne:AddLabel( 'OnBall' ) 
+        for _,Type in pairs(Info.CommandTypes.OnBall) do
+            self.UIElements[ Type .. ' Toggle' ] = self.MainGroupBoxes.RightOne:AddToggle( Type , {
+                Text = Type 
+            })
+        end
+        self.MainGroupBoxes.RightOne:AddLabel( 'OffBall' ) 
+        for _,Type in pairs(Info.CommandTypes.OffBall) do
+            self.UIElements[ Type .. ' Toggle' ] = self.MainGroupBoxes.RightOne:AddToggle( Type , {
+                Text = Type 
+            })
+        end
         self.MainGroupBoxes.RightOne:AddLabel( 'Commands' ) 
         self.MainGroupBoxes.RightOne:AddButton( 'Teleport To Main' , function()
             
         end)
     end 
     --// global group boxes //--
-    self.MainGroupBoxes.LeftTwo = self.MainTab:AddLeftGroupbox( 'Main' )
+    self.MainGroupBoxes.LeftTwo = self.MainTab:AddLeftGroupbox( 'Misc.' )
     self.MainGroupBoxes.RightTwo = self.MainTab:AddRightGroupbox( 'Ingame stuff' )
 
     --// Aimbot //--
     self.UIElements.Aimbot = self.MainGroupBoxes.RightTwo:AddToggle( 'Aimbot' , {
         Text = 'Aimbot' , 
         Default = true , 
-        Tooltip = 'Semi-Accurate aimbot ig'
+        Tooltip = 'Times the bar for you'
     })
     self.UIElements.AimbotSlider = self.MainGroupBoxes.RightTwo:AddSlider( 'Aimbot Slider' , {
         Text = 'Aimbot Slider' , 
-        Default = 0.6,
-        Min = 0.3 ,
-        Max = 0.9 , 
+        Default = 0.7,
+        Min = 0.2 ,
+        Max = 1 , 
         Rounding = 2 , 
     })
     --------------------
@@ -220,6 +215,10 @@ function ArtsHub:LoadUI( )
         Default = true , 
     })
     -------------------
+    --// Remove Usernames //--
+    self.UIElements.RemoveTags = self.MainGroupBoxes.LeftTwo:AddToggle( 'Remove NameTags' , {
+        Text = 'Remove NameTags' , 
+    })
 
     --// Settings right group box //--
     self.SettingsGroupBoxes.RightOne = self.SettingsTab:AddRightGroupbox( 'Extra Settings' )
@@ -282,7 +281,6 @@ function ArtsHub:UIEvents()
             Linoria:Notify( 'Invalid Name' , 10 )
         end 
     end)
-
     self.UIElements.Boosting:OnChanged(function()
         local Data = Utility.getData( Info.GDFileName )
         if Data then
@@ -290,11 +288,34 @@ function ArtsHub:UIEvents()
             Utility.saveData( Info.GDFileName , Data )
         end
     end)
+    self.UIElements.RemoveTags:OnChanged(function()
+        local NameTags = workspace.NameUIFolder 
+        local Value = self.UIElements.RemoveTags.Value
+        for _,Tag in pairs(NameTags:GetDescendants()) do
+            if Tag:IsA( 'BillboardGui' ) then
+                Tag.Enabled = not Value 
+            end
+        end
+    end)
+    Options['Account Dropdown']:OnChanged(function()
+        local NewValue = Options[ 'Account Dropdown' ].Value
+        if NewValue == nil then
+            return 
+        end
+        --// Get the account data for it //--
+        local AccountControlData = Utility.getData( Info.ACFileName )
+        if AccountControlData and AccountControlData.Accounts[NewValue] then
+            local AccountData = AccountControlData.Accounts[NewValue]
+
+        else
+            Linoria:Notify( 'Could not find data for ' .. NewValue )
+        end
+    end)
 end 
 
 function ArtsHub:Events()
     game.Players.PlayerAdded:Connect(function( PlayerWhoJoined ) 
-        if table.find( self.Snitches , PlayerWhoJoined.Name:lower() ) then
+        if table.find( Info.Snitches , PlayerWhoJoined.Name:lower() ) then
             Player:Kick( PlayerWhoJoined.Name .. ' joined and tried to snitch on you lmao' )
         end 
         if self.UIElements.JoinLogs.Value then

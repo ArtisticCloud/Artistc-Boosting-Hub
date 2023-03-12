@@ -15,11 +15,11 @@ Player.CharacterAdded:Connect(function( NewCharacter )
     Character = NewCharacter
 end)
 
-Commands.AutoPass = function( PassingTo )
+Commands[ 'Auto Pass' ] = function( PassingTo )
     
 end
 
-Commands.AutoShoot = function()
+Commands[ 'Auto Shoot' ] = function()
     
 end
 
@@ -35,13 +35,35 @@ function Commands.new( Hub )
     
     self.OnBall = ''
     self.OffBall = ''
+    self.CommandData = {OnBall={},OffBall={}}
+
+    print( "Art's Hub Debug: | Command set created" )
 
     return self
 end
 
-function Commands:SwitchTask()
-
+function Commands:CharacterEvents( Character )
+    Character.ChildAddded:Connect(function( Child )
+        if Child.Name == 'Basketball' and Commands[self.OnBall] then
+            Commands[self.OnBall](self.CommandData.OnBall)
+        end 
+    end)
 end
 
+function Commands:Listen()
+    --// Check if the alt is in account control //--
+    local AccountControlData = Utility.getData( Info.ACFileName )
+    local AccountData = AccountControlData and AccountControlData.Accounts[Player.Name]
+    if AccountData then
+        self.OnBall = AccountData.CurrentTasks.OnBall 
+        self.OffBall = AccountData.CurrentTasks.OffBall
+    end
+end
+
+function Commands:Update()
+    if Commands[ self.OffBall ] and not Utility.hasBall() and Player.Character then
+        Commands[ self.OffBall ](self.CommandData.OffBall) 
+    end
+end
 
 return Commands
