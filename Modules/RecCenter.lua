@@ -23,6 +23,7 @@ function Rec.new( Hub , Window )
 
     self.LobbyGroupBox = nil
 
+    print( 'working' )
     self:LoadUI()
     self:Events()
 
