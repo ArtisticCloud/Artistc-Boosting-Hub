@@ -8,6 +8,7 @@ local Storage = game:GetService( 'ReplicatedStorage' )
 
 local Remotes = Storage:WaitForChild( 'Remotes' , 20 )
 
+local RecClass = nil 
 function Rec.new( Hub , RecTab )
     print( 'was called' )
     local self = setmetatable({},{
@@ -30,6 +31,8 @@ function Rec.new( Hub , RecTab )
     self:LoadUI()
     self:Events()
 
+    RecClass = self 
+
     return self
 end
 
@@ -39,6 +42,10 @@ function Rec:LoadUI()
         self.UIElements.RecBoosting = self.LobbyGroupBox:AddToggle( 'Rec_Boosting' , {
             Text = 'Rec Boosting' , 
             Tooltip = 'doesnt do anything yet'
+        })
+        self.UIElements.AutoStart = self.LobbyGroupBox:AddToggle( 'Auto_Start' , {
+            Text = 'Auto Start' , 
+            Tooltip = 'Automatically starts when both parties are full'
         })
         self.UIElements['Other_Main'] = self.LobbyGroupBox:AddDropdown( 'Other Main' ,  {
             Values = {} , 
@@ -127,6 +134,10 @@ function Rec:AltEvents( AccountData , AccountControlData )
             Utility.saveData( Info.ACFileName , AccountControlData )
         end 
     end
+    if AccountData.PartyToJoin then
+
+        Utility.saveData(  )
+    end
     return true
 end
 
@@ -147,5 +158,11 @@ function Rec:Update()
     end
     return true 
 end
+
+game:GetService( 'RunService' ).RenderStepped:Connect(function()
+    if RecClass and getmetatable( RecClass ) then
+        RecClass:Update()
+    end
+end)
 
 return Rec

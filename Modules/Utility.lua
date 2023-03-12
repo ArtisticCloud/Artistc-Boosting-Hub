@@ -101,4 +101,8 @@ function Utility.findIndexFromValue( Table , Value )
     end 
 end 
 
+function Utility.dictToTable( Dictionary )
+
+end
+
 return Utility
