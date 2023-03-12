@@ -24,6 +24,9 @@ function Rec.new( Hub , RecTab )
 
     self.LobbyGroupBox = nil
 
+    self.MainParty = nil 
+    self.AltParty = nil 
+
     self:LoadUI()
     self:Events()
 
@@ -31,36 +34,44 @@ function Rec.new( Hub , RecTab )
 end
 
 function Rec:LoadUI()
-    self.LobbyGroupBox = self.RecTab:AddLeftGroupbox( 'Rec. Lobby' )
-    self.UIElements.RecBoosting = self.LobbyGroupBox:AddToggle( 'Rec_Boosting' , {
-        Text = 'Rec Boosting' , 
-        Tooltip = 'doesnt do anything yet'
-    })
-    self.UIElements['Other_Main'] = self.LobbyGroupBox:AddDropdown( 'Other Main' ,  {
-        Values = {} , 
-        Text = 'Other Main' , 
-    })
-    self.UIElements.MainPartyCode = self.LobbyGroupBox:AddLabel( 'Main Party: None' )
-    self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
-    self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
-        local OtherMain = self.UIElements.Other_Main.Value and Utility.isValidAlt( self.UIElements.Other_Main.Value )
-        if OtherMain then
-            print( 'create code here' )
-        elseif not OtherMain then
-            self.Linoria:Notify( 'Invalid Main' , 8 )
-        end
-    end)
-    self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Invite Alts' , function()
-        local Accounts = Utility.getData( Info.ACFileName )
-        if Accounts then 
-            for AccountName , AccountData in pairs(Accounts.Accounts) do
-                if not game.Players:FindFirstChild( AccountName ) then
-                    self.Linoria:Notify( AccountName .. ' is not in your server' , 9 )
-                end
+    if self.AccountType == 'Main' then
+        self.LobbyGroupBox = self.RecTab:AddLeftGroupbox( 'Rec. Lobby' )
+        self.UIElements.RecBoosting = self.LobbyGroupBox:AddToggle( 'Rec_Boosting' , {
+            Text = 'Rec Boosting' , 
+            Tooltip = 'doesnt do anything yet'
+        })
+        self.UIElements['Other_Main'] = self.LobbyGroupBox:AddDropdown( 'Other Main' ,  {
+            Values = {} , 
+            Text = 'Other Main' , 
+        })
+        self.UIElements.MainPartyCode = self.LobbyGroupBox:AddLabel( 'Main Party: None' )
+        self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
+        self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
+            local OtherMain = self.UIElements.Other_Main.Value and Utility.isValidAlt( self.UIElements.Other_Main.Value )
+            if OtherMain then
+                print( 'create code here' )
+            elseif not OtherMain then
+                self.Linoria:Notify( 'Invalid Main' , 8 )
             end
-            return true 
-        end 
-    end)
+        end)
+        self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Invite Alts' , function()
+            local Accounts = Utility.getData( Info.ACFileName )
+            if Accounts then 
+                --// Make all the alts join the alt party //--
+                for AccountName , AccountData in pairs(Accounts.Accounts) do
+                    if not game.Players:FindFirstChild( AccountName ) then
+                        self.Linoria:Notify( AccountName .. ' is not in your server' , 9 )
+                    elseif game.Players:FindFirstChild( AccountName ) and AccountName ~= self.Main and self.AltParty and not Accounts.Accounts[AccountName].PartyToJoin then
+                        --// Join an alt party //--
+                        Accounts.Accounts[AccountName].PartyToJoin = self.AltParty
+                    end
+                    Utility.saveData( Info.ACFileName , Accounts )
+                end
+                return true 
+            end 
+        end)
+    end
+    return true 
 end
 
 function Rec:Events()
@@ -72,17 +83,25 @@ function Rec:Events()
     end)
 end
 
-function Rec:SetPartyCodes( User1 , Code1  )
+function Rec:createPartyCodes( OtherMain )
     local GeneralData = Utility.getData( Info.GDFileName )
-    if GeneralData then
-        GeneralData.Parties[User1] = Code1 
-        Utility.saveData( GeneralData )
+    if GeneralData and Remotes:FindFirstChild( 'Parties' ) then
+        local Response , ResponseData = Remotes.Parties:InvokeServer( 'Start' )
+        if Response then
+            local AccountData , AccountControlData = Utility.isValidAlt( OtherMain )
+            if AccountData then
+                AccountControl.Accounts[OtherMain].CreateParty = true 
+
+            end
+            GeneralData.Parties.MainParty = ResponseData.Code
+            Utility.saveData( Info.GDFileName , GeneralData ) 
+        else
+            self.Linoria:Notify( 'Could not start the main party. Error: ' .. tostring(ResponseData) )
+        end
+    elseif not Remotes:FindFirstChild( 'Parties' ) then
+        self.Linoria:Notify( 'bro your not even in rec' )
     end
 end     
-
-function Rec:createParty()
-    return Remotes.Parties:InvokeServer( 'Start' )
-end
 
 function Rec:JoinParty( Code )
     Remotes.Parties:InvokeServer( 'Leave' )
@@ -94,6 +113,23 @@ function Rec:JoinParty( Code )
     self.Linoria:Notify( 'Successfully joined party through code: ' .. '"' .. Code .. '"' )
 end
 
+function Rec:AltEvents( AccountData , AccountControlData )
+    if AccountData['CreateParty'] then
+        AccountControlData.Accounts[Player.Name].CreateParty = nil 
+        local GeneralData = Utility.getData( Info.GDFileName )
+        if GeneralData then
+            task.spawn(function()
+                Remotes.Parties:InvokeServer( 'Leave' )
+                local Response , ResponseData = Remotes.Parties:InvokeServer( 'Start' )
+                GeneralData.Rec.Parties.Alts = ResponseData.Code
+                Utility.saveData( Info.GDFileName , GeneralData )
+            end)
+            Utility.saveData( Info.ACFileName , AccountControlData )
+        end 
+    end
+    return true
+end
+
 function Rec:Update()
     local RecData = Utility.getData( Info.GDFileName )
     if RecData then
@@ -101,8 +137,15 @@ function Rec:Update()
     end
     local AccountControlData = Utility.getData( Info.ACFileName )
     if AccountControlData then
-        self.UIElements.Other_Main:SetValue( AccountControlData )
+        self.UIElements.Other_Main:SetValue( AccountControlData.Accounts )
     end
+    if self.AccountType == 'Alt' and AccountControlData then
+        local MyData = AccountControlData.Accounts[Player.Name]
+        if Data then
+            self:AltEvents()
+        end
+    end
+    return true 
 end
 
 return Rec
