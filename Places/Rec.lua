@@ -48,7 +48,7 @@ function Rec:LoadUI()
             Text = 'Auto Start' , 
             Tooltip = 'Automatically starts when both parties are full'
         })
-        self.UIElements['Other_Main'] = self.LobbyGroupBox:AddDropdown( 'Other Main' ,  {
+        self.UIElements['Other_Main'] = self.LobbyGroupBox:AddDropdown( 'Other_Main' ,  {
             Values = {} , 
             Text = 'Other Main' , 
         })
@@ -153,7 +153,7 @@ function Rec:Update()
     local AccountControlData = Utility.getData( Info.ACFileName )
     local GeneralData = Utility.getData( Info.GDFileName )
     if AccountControlData then
-        self.UIElements.Other_Main:SetValue( AccountControlData.Accounts )
+        Options.Other_Main:SetValue( AccountControl )
     end
     if self.AccountType == 'Alt' and AccountControlData then
         local MyData = AccountControlData.Accounts[Player.Name]
@@ -162,7 +162,7 @@ function Rec:Update()
         end
     end
     if GeneralData then
-        local MainPartyCode , AltPartyCode = GeneralData.Parties.Main , GeneralData.Parties.Alt
+        local MainPartyCode , AltPartyCode = GeneralData.Rec.Parties.Main , GeneralData.Rec.Parties.Alt
         self.UIElements.MainPartyCode:SetText(  'Main Party: ' .. MainPartyCode or 'None' )
         self.UIElements.AltPartyCode:SetText(  'Alt Party: ' .. AltPartyCode or 'None' )
     end
