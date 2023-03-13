@@ -69,6 +69,7 @@ Info.CommandTypes = {
     OffBall = {
         'Auto Guard' , 
         'Auto Post Anchor' , 
+        'Auto Rebound' , 
     } , 
 }
 
