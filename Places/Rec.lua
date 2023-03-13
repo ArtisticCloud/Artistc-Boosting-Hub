@@ -56,7 +56,6 @@ function Rec:LoadUI()
         self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
         self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
             local OtherMain = Options.Account_Dropdown.Value and Utility.isValidAlt( Options.Account_Dropdown.Value )
-            print( Options.Account_Dropdown.Value )
             if OtherMain and game.Players:FindFirstChild( Options.Account_Dropdown.Value ) then
                 self:createPartyCodes( Options.Account_Dropdown.Value )
             elseif not OtherMain or not game.Players:FindFirstChild( OtherMain ) then
@@ -106,7 +105,7 @@ function Rec:createPartyCodes( OtherMain )
         if Response then
             local AccountData , AccountControlData = Utility.isValidAlt( OtherMain )
             if AccountData then
-                AccountControl.Accounts[OtherMain].CreateParty = true 
+                AccountControlData.Accounts[OtherMain].CreateParty = true 
                 return 'other main dont exist'
             end
             GeneralData.Rec.Parties.Main = ResponseData.Code
