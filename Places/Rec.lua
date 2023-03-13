@@ -109,7 +109,6 @@ function Rec:createPartyCodes( OtherMain )
             if AccountData then
                 AccountControlData.Accounts[OtherMain].CreateParty = true 
             end
-            print( 'code' , ResponseData.Code )
             GeneralData.Rec.Parties.Main = ResponseData.Code
             Utility.saveData( Info.GDFileName , GeneralData ) 
             self.Linoria:Notify( 'Successfully created main party. Code: ' .. tostring(ResponseData.Code) )
