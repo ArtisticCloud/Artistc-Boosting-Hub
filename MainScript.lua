@@ -4,7 +4,6 @@ local Info = loadstring(game:HttpGet(("https://raw.githubusercontent.com/Artisti
 local Commands = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/Commands.lua'),true))()
 local AccountControl = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Modules/AccountControl.lua'),true))()
 
-loadstring(game:HttpGet( ('https://raw.githubusercontent.com/ArtisticCloud/Artistc-Boosting-Hub/master/Places/Rec.lua') ))
 print( "Art's Hub Debug: | Modules Loaded" )
 local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
 local Linoria = loadstring(game:HttpGet(repo .. 'Library.lua'))()
@@ -398,6 +397,8 @@ if not Data then
 elseif Data and AccountControlData and AccountControlData.Accounts[Player.Name] or Data and Data.Main == Player.Name then
     print( "Art's Hub Debug: | Data found, registering hub" )
     getgenv().ArtsHub = ArtsHub.new( Data.Main )
+else
+    Linoria:Notify( 'You arent registered bro' )
 end
 
 RunService.RenderStepped:Connect(function()

@@ -8,8 +8,8 @@ local Character = Player.Character or Player.CharacterAdded:Wait()
 local Storage = game:GetService( 'ReplicatedStorage' ) 
 local Tween = game:GetService( 'TweenService' )
 
-local Remotes = Storage:WaitForChild( 'Remotes' ) 
-local GameEvents = Storage:WaitForChild( 'GameEvents' )
+local Remotes = Storage:WaitForChild( 'Remotes' , 15 ) 
+local GameEvents = Storage:WaitForChild( 'GameEvents' , 15 )
 
 Player.CharacterAdded:Connect(function( NewCharacter )
     Character = NewCharacter
