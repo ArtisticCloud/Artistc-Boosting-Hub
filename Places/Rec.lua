@@ -64,7 +64,7 @@ function Rec:LoadUI()
         end)
         self.UIElements.PartyCodeInput = self.LobbyGroupBox:AddInput( 'Party Code' , {
             Text = 'Party Code' , 
-            Placeholder = '' , 
+            Placeholder = 'Code..' , 
         })
         self.UIElements.InviteAlts = self.LobbyGroupBox:AddButton( 'Invite Alts' , function()
             local Accounts = Utility.getData( Info.ACFileName )
@@ -154,7 +154,7 @@ function Rec:Update()
     local AccountControlData = Utility.getData( Info.ACFileName )
     local GeneralData = Utility.getData( Info.GDFileName )
     if AccountControlData then
-        Options.Other_Main:SetValue( AccountControl )
+        Options.Other_Main:SetValue( self.RegisteredAlts )
     end
     if self.AccountType == 'Alt' and AccountControlData then
         local MyData = AccountControlData.Accounts[Player.Name]
