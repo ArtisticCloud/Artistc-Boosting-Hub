@@ -60,7 +60,7 @@ function Rec:LoadUI()
                 local Response = self:createPartyCodes( Options.Account_Dropdown.Value )
             elseif not OtherMain or not game.Players:FindFirstChild( Options.Account_Dropdown.Value ) then
                 self.Linoria:Notify( 'Invalid Main' , 8 )
-            elseif not game.Players:FindFirstChild( Options.Account_Dropdown.Value )
+            elseif not game.Players:FindFirstChild( Options.Account_Dropdown.Value ) then
                 self.Linoria:Notify( 'Other main isnt in your server' )
             end
         end)
@@ -114,7 +114,7 @@ function Rec:createPartyCodes( OtherMain )
             Utility.saveData( Info.GDFileName , GeneralData ) 
             self.Linoria:Notify( 'Successfully created main party. Code: ' .. tostring(ResponseData.Code) )
         else
-            self.Linoria:Notify( 'Could not start the main party. Error: ' .. tostring(ResponseData.Code) , 9 )
+            self.Linoria:Notify( 'Could not start the main party. Error: ' .. tostring(ResponseData.Code) , 8 )
             return
         end
     elseif not Remotes:FindFirstChild( 'Parties' ) then
@@ -147,7 +147,7 @@ function Rec:AltEvents( AccountData , AccountControlData )
         end 
     end
     if AccountData.PartyToJoin then
-        self:JoinParty( AccountData.PartyToJoin )
+        local Response = self:JoinParty( AccountData.PartyToJoin )
         AccountControlData.Accounts[Player.Name].PartyToJoin = nil 
         Utility.saveData( Info.ACFileName , AccountControlData )
     end
