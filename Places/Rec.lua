@@ -163,9 +163,9 @@ function Rec:Update()
         end
     end
     if GeneralData then
-        local MainPartyCode , AltPartyCode = GeneralData.Rec.Parties.Main , GeneralData.Rec.Parties.Alt
-        self.UIElements.MainPartyCode:SetText(  'Main Party: ' .. MainPartyCode or 'None' )
-        self.UIElements.AltPartyCode:SetText(  'Alt Party: ' .. AltPartyCode or 'None' )
+        local MainPartyCode , AltPartyCode = GeneralData.Rec.Parties.Main or 'None' , GeneralData.Rec.Parties.Alt or 'None'
+        self.UIElements.MainPartyCode:SetText(  'Main Party: ' .. MainPartyCode )
+        self.UIElements.AltPartyCode:SetText(  'Alt Party: ' .. AltPartyCode )
     end
     return true 
 end
