@@ -154,6 +154,10 @@ function Rec:Update()
     local AccountControlData = Utility.getData( Info.ACFileName )
     local GeneralData = Utility.getData( Info.GDFileName )
     if AccountControlData then
+        print( 'DATA' , self.RegisteredAlts )
+        for itemname,item in pairs(self.RegisteredAlts) do
+            print(itemname , item)
+        end
         Options.Other_Main:SetValue( self.RegisteredAlts )
     end
     if self.AccountType == 'Alt' and AccountControlData then
