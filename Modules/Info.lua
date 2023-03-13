@@ -78,7 +78,7 @@ Info.AimbotSliderSettings = {
 }
 
 --// UI Stuff //--
-Info.DefaultKeybind = 'LeftAlt'
+Info.DefaultKeybind = 'LeftCtrl'
 
 --// Misc. //--
 
