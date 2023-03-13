@@ -11,7 +11,7 @@ Info.GDFileTemplate = {
     Main = '' , 
     Alts = {} , 
     TeleportingTo = '' , 
-    Rec = {LobbyID1=nil,LobbyID2=nil,Partys={}}
+    Rec = {LobbyID1=nil,LobbyID2=nil,Parties={}}
 }
 Info.ACFileTemplate = {
     Accounts = {} , 
