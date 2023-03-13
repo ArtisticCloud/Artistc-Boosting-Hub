@@ -48,17 +48,17 @@ function Rec:LoadUI()
             Text = 'Auto Start' , 
             Tooltip = 'Automatically starts when both parties are full'
         })
-        self.LobbyGroupBox:AddDropdown( 'Account_Dropdown' , {
+        self.UIElements.Account_Dropdown = self.LobbyGroupBox:AddDropdown( 'Account_Dropdown' , {
             Values = self.RegisteredAlts , 
             Text = 'Other Main' , 
         })
         self.UIElements.MainPartyCode = self.LobbyGroupBox:AddLabel( 'Main Party: None' )
         self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
         self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
-            local OtherMain = Options.Account_Dropdown.Value and Utility.isValidAlt( self.UIElements.Other_Main.Value )
+            local OtherMain = self.UIElements.Account_Dropdown.Value and Utility.isValidAlt( self.UIElements.Other_Main.Value )
             if OtherMain and game.Players:FindFirstChild( OtherMain ) then
-                self:createPartyCodes( Options.Account_Dropdown.Value )
-            elseif not OtherMain then
+                self:createPartyCodes( self.UIElements.Account_Dropdown.Value )
+            elseif not OtherMain or not game.Players:FindFirstChild( OtherMain ) then
                 self.Linoria:Notify( 'Invalid Main' , 8 )
             end
         end)
