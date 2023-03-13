@@ -108,7 +108,6 @@ function Rec:createPartyCodes( OtherMain )
             local AccountData , AccountControlData = Utility.isValidAlt( OtherMain )
             if AccountData then
                 AccountControlData.Accounts[OtherMain].CreateParty = true 
-                return 'other main dont exist'
             end
             print( 'code' , ResponseData.Code )
             GeneralData.Rec.Parties.Main = ResponseData.Code
