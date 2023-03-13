@@ -104,11 +104,12 @@ function Rec:createPartyCodes( OtherMain )
     local GeneralData = Utility.getData( Info.GDFileName )
     if GeneralData and Remotes:FindFirstChild( 'Parties' ) then
         local Response , ResponseData = Remotes.Parties:InvokeServer( 'Start' )
+        local AccountData , AccountControlData = Utility.isValidAlt( OtherMain )
+        --// tell alt to create party //--
+        if AccountData then
+            AccountControlData.Accounts[OtherMain].CreateParty = true 
+        end
         if Response then
-            local AccountData , AccountControlData = Utility.isValidAlt( OtherMain )
-            if AccountData then
-                AccountControlData.Accounts[OtherMain].CreateParty = true 
-            end
             GeneralData.Rec.Parties.Main = ResponseData.Code
             Utility.saveData( Info.GDFileName , GeneralData ) 
             self.Linoria:Notify( 'Successfully created main party. Code: ' .. tostring(ResponseData.Code) )
