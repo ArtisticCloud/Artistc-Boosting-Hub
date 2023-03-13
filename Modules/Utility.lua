@@ -101,8 +101,18 @@ function Utility.findIndexFromValue( Table , Value )
     end 
 end 
 
-function Utility.dictToTable( Dictionary )
+function Utility.Teleport( Place , Slot )
+    local CurrentPlace = Utility.findIndexFromValue( game.PlaceId )
 
+    local function tp( Place )
+        Remotes.Teleport:InvokeServer( Place )
+    end
+
+    if Place == 'Rec Lobby' or Place == 'Park' or Place == 'My Gym' then
+        if CurrentPlace == 'MainMenu' then
+            
+        end
+    end
 end
 
 return Utility
