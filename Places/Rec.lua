@@ -50,14 +50,14 @@ function Rec:LoadUI()
         })
         self.LobbyGroupBox:AddDropdown( 'Account_Dropdown' , {
             Values = self.RegisteredAlts , 
-            Text = 'Account' , 
+            Text = 'Other Main' , 
         })
         self.UIElements.MainPartyCode = self.LobbyGroupBox:AddLabel( 'Main Party: None' )
         self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
         self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
-            local OtherMain = self.UIElements.Other_Main.Value and Utility.isValidAlt( self.UIElements.Other_Main.Value )
+            local OtherMain = Options.Account_Dropdown.Value and Utility.isValidAlt( self.UIElements.Other_Main.Value )
             if OtherMain then
-                print( 'create code here' )
+                self:createPartyCodes( Options.Account_Dropdown.Value )
             elseif not OtherMain then
                 self.Linoria:Notify( 'Invalid Main' , 8 )
             end
@@ -106,9 +106,9 @@ function Rec:createPartyCodes( OtherMain )
             local AccountData , AccountControlData = Utility.isValidAlt( OtherMain )
             if AccountData then
                 AccountControl.Accounts[OtherMain].CreateParty = true 
-
+                return 'other main dont exist'
             end
-            GeneralData.Parties.MainParty = ResponseData.Code
+            GeneralData.Rec.Parties.Main = ResponseData.Code
             Utility.saveData( Info.GDFileName , GeneralData ) 
         else
             self.Linoria:Notify( 'Could not start the main party. Error: ' .. tostring(ResponseData) )
@@ -136,7 +136,7 @@ function Rec:AltEvents( AccountData , AccountControlData )
             task.spawn(function()
                 Remotes.Parties:InvokeServer( 'Leave' )
                 local Response , ResponseData = Remotes.Parties:InvokeServer( 'Start' )
-                GeneralData.Rec.Parties.Alts = ResponseData.Code
+                GeneralData.Rec.Parties.Alt = ResponseData.Code
                 Utility.saveData( Info.GDFileName , GeneralData )
             end)
             Utility.saveData( Info.ACFileName , AccountControlData )
