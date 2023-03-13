@@ -55,7 +55,8 @@ function Rec:LoadUI()
         self.UIElements.MainPartyCode = self.LobbyGroupBox:AddLabel( 'Main Party: None' )
         self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
         self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
-            local OtherMain = Options.Account_Dropdown.Value and Utility.isValidAlt( Options.Account_Dropdown.Value ) or ''
+            local OtherMain = Options.Account_Dropdown.Value and Utility.isValidAlt( Options.Account_Dropdown.Value )
+            print( Options.Account_Dropdown.Value )
             if OtherMain and game.Players:FindFirstChild( Options.Account_Dropdown.Value ) then
                 self:createPartyCodes( Options.Account_Dropdown.Value )
             elseif not OtherMain or not game.Players:FindFirstChild( OtherMain ) then
