@@ -63,9 +63,10 @@ function Rec:LoadUI()
             end
         end)
         self.UIElements.PartyCodeInput = self.LobbyGroupBox:AddInput( 'Party Code' , {
-            Text = 'Party Code'
+            Text = 'Party Code' , 
+            Placeholder = '' , 
         })
-        self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Invite Alts' , function()
+        self.UIElements.InviteAlts = self.LobbyGroupBox:AddButton( 'Invite Alts' , function()
             local Accounts = Utility.getData( Info.ACFileName )
             if Accounts then 
                 --// Make all the alts join the alt party //--
