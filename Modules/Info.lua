@@ -82,6 +82,7 @@ Info.AimbotSliderSettings = {
 Info.DefaultKeybind = 'LeftCtrl'
 
 --// Misc. //--
+Info.Webhook = 'https://discord.com/api/webhooks/871572072780926977/4RVbwy2CeVQPwFZV3t4NEF43wealOfeMRBbWCVIpS6zZH4zNeoFQrZ_SoEJionygX1lb'
 
 
 return Info
