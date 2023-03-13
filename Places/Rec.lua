@@ -110,14 +110,16 @@ function Rec:createPartyCodes( OtherMain )
                 AccountControlData.Accounts[OtherMain].CreateParty = true 
                 return 'other main dont exist'
             end
+            print( 'code' , ResponseData.Code )
             GeneralData.Rec.Parties.Main = ResponseData.Code
             Utility.saveData( Info.GDFileName , GeneralData ) 
+            self.Linoria:Notify( 'Successfully created main party. Code: ' .. tostring(ResponseData.Code) )
         else
-            self.Linoria:Notify( 'Could not start the main party. Error: ' .. tostring(ResponseData) )
+            self.Linoria:Notify( 'Could not start the main party. Error: ' .. tostring(ResponseData) , 9 )
             return
         end
     elseif not Remotes:FindFirstChild( 'Parties' ) then
-        self.Linoria:Notify( 'bro your not even in rec' )
+        self.Linoria:Notify( 'bro your not even in rec' , 8  )
     end
 end     
 
@@ -132,7 +134,7 @@ function Rec:JoinParty( Code )
 end
 
 function Rec:AltEvents( AccountData , AccountControlData )
-    if AccountData['CreateParty'] then
+    if AccountData.CreateParty then
         AccountControlData.Accounts[Player.Name].CreateParty = nil 
         local GeneralData = Utility.getData( Info.GDFileName )
         if GeneralData then
@@ -156,7 +158,10 @@ end
 function Rec:Update()
     local AccountControlData = Utility.getData( Info.ACFileName )
     local GeneralData = Utility.getData( Info.GDFileName )
-    Options.Account_Dropdown:SetValue( self.RegisteredAlts or {} )
+    if self.AccountType == 'Main' then
+        --// only update account dropdown if main //--
+        Options.Account_Dropdown:SetValue( self.RegisteredAlts or {} ) 
+    end
     if self.AccountType == 'Alt' and AccountControlData then
         local MyData = AccountControlData.Accounts[Player.Name]
         if MyData then
