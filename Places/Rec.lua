@@ -56,7 +56,7 @@ function Rec:LoadUI()
         self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
         self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
             local OtherMain = Options.Account_Dropdown.Value and Utility.isValidAlt( self.UIElements.Other_Main.Value )
-            if OtherMain then
+            if OtherMain and game.Players:FindFirstChild( OtherMain ) then
                 self:createPartyCodes( Options.Account_Dropdown.Value )
             elseif not OtherMain then
                 self.Linoria:Notify( 'Invalid Main' , 8 )
