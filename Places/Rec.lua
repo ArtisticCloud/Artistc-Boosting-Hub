@@ -166,7 +166,7 @@ function Rec:Update()
             self:AltEvents()
         end
     end
-    if GeneralData then
+    if GeneralData and self.AccountType == 'Main' then
         local MainPartyCode , AltPartyCode = GeneralData.Rec.Parties.Main or 'None' , GeneralData.Rec.Parties.Alt or 'None'
         self.UIElements.MainPartyCode:SetText(  'Main Party: ' .. MainPartyCode )
         self.UIElements.AltPartyCode:SetText(  'Alt Party: ' .. AltPartyCode )
