@@ -61,6 +61,9 @@ function Rec:LoadUI()
                 self.Linoria:Notify( 'Invalid Main' , 8 )
             end
         end)
+        self.UIElements.PartyCodeInput = self.LobbyGroupBox:AddInput( 'Party Code' , {
+            Text = 'Party Code'
+        })
         self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Invite Alts' , function()
             local Accounts = Utility.getData( Info.ACFileName )
             if Accounts then 
@@ -138,8 +141,7 @@ function Rec:AltEvents( AccountData , AccountControlData )
         end 
     end
     if AccountData.PartyToJoin then
-        Remotes.Parties:InvokeServer( 'Leave' ) 
-        Remotes.Parties:InvokeServer( 'Join' , tostring(AccountData.PartyToJoin) )
+        self:JoinParty( AccountData.PartyToJoin )
         AccountControlData.Accounts[Player.Name].PartyToJoin = nil 
         Utility.saveData( Info.ACFileName , AccountControlData )
     end
@@ -154,19 +156,19 @@ function Rec:Update()
     end
     if self.AccountType == 'Alt' and AccountControlData then
         local MyData = AccountControlData.Accounts[Player.Name]
-        if Data then
+        if MyData then
             self:AltEvents()
         end
     end
     if GeneralData then
-        local MainPartyCode , AltPartyCode = 
-        self.UIElements.MainPartyCode:SetText(   )
+        local MainPartyCode , AltPartyCode = GeneralData.Parties.Main , GeneralData.Parties.Alt
+        self.UIElements.MainPartyCode:SetText(  'Main Party: ' .. MainPartyCode or 'None' )
+        self.UIElements.AltPartyCode:SetText(  'Alt Party: ' .. AltPartyCode or 'None' )
     end
     return true 
 end
 
 game:GetService( 'RunService' ).RenderStepped:Connect(function()
-    print( 'working' , RecClass )
     if RecClass and getmetatable( RecClass ) then
         RecClass:Update()
     end
