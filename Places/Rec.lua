@@ -58,8 +58,10 @@ function Rec:LoadUI()
             local OtherMain = Options.Account_Dropdown.Value and Utility.isValidAlt( Options.Account_Dropdown.Value )
             if OtherMain and game.Players:FindFirstChild( Options.Account_Dropdown.Value ) then
                 local Response = self:createPartyCodes( Options.Account_Dropdown.Value )
-            elseif not OtherMain or not game.Players:FindFirstChild( OtherMain ) then
+            elseif not OtherMain or not game.Players:FindFirstChild( Options.Account_Dropdown.Value ) then
                 self.Linoria:Notify( 'Invalid Main' , 8 )
+            elseif not game.Players:FindFirstChild( Options.Account_Dropdown.Value )
+                self.Linoria:Notify( 'Other main isnt in your server' )
             end
         end)
         self.UIElements.PartyCodeInput = self.LobbyGroupBox:AddInput( 'Party Code' , {
