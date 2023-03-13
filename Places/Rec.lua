@@ -163,7 +163,7 @@ function Rec:Update()
     if self.AccountType == 'Alt' and AccountControlData then
         local MyData = AccountControlData.Accounts[Player.Name]
         if MyData then
-            self:AltEvents()
+            self:AltEvents( MyData )
         end
     end
     if GeneralData and self.AccountType == 'Main' then
