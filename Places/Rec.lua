@@ -108,6 +108,7 @@ function Rec:createPartyCodes( OtherMain )
         --// tell alt to create party //--
         if AccountData then
             AccountControlData.Accounts[OtherMain].CreateParty = true 
+            Utility.saveData( Info.ACFileName , AccountControlData )
         end
         if Response then
             GeneralData.Rec.Parties.Main = ResponseData.Code
@@ -143,8 +144,8 @@ function Rec:AltEvents( AccountData , AccountControlData )
                 GeneralData.Rec.Parties.Alt = ResponseData.Code
                 Utility.saveData( Info.GDFileName , GeneralData )
             end)
-            Utility.saveData( Info.ACFileName , AccountControlData )
         end 
+        Utility.saveData( Info.ACFileName , AccountControlData )
     end
     if AccountData.PartyToJoin then
         local Response = self:JoinParty( AccountData.PartyToJoin )
@@ -178,6 +179,16 @@ end
 game:GetService( 'RunService' ).RenderStepped:Connect(function()
     if RecClass and getmetatable( RecClass ) then
         RecClass:Update()
+    end
+end)
+
+game:GetService( 'Players' ).PlayerRemoving:Connect(function( PlayerWhoLeft ) 
+    if RecClass and PlayerWhoLeft == RecClass.Main then
+        local GeneralData = Utility.getData( Info.GDFileName )
+        if GeneralData then
+            GeneralData.Rec.Parties.Main = nil
+            Utility.saveData( Info.GDFileName , GeneralData )
+        end
     end
 end)
 
