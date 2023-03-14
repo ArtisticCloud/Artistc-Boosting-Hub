@@ -4,6 +4,7 @@ local Http = game:GetService( 'HttpService' )
 
 --// Services // --
 local Storage = game:GetService( 'ReplicatedStorage' ) 
+local JDIO = 2
 
 function Utility.findGlobalPlayer( Username )
     local UserId 
