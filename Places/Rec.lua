@@ -100,7 +100,7 @@ end
 function Rec:GlobalLeaveParty()
     local AccountControl = Utility.getData( Info.ACFileName )
     if AccountControl then
-        for Account,Data in pairs(AccountControl) do
+        for Account,Data in pairs(AccountControl.Accounts) do
             AccountControl.Accounts[Account].LeaveParty = true
         end
         Utility.saveData( Info.ACFileName , AccountControl )
