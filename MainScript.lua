@@ -80,6 +80,21 @@ function ArtsHub.new( Main )
     self:Events()
     Linoria:Notify( "Art's Hub Initalized. \nPress " .. Info.DefaultKeybind .. ' to toggle' , 12 )
 
+    --// disable kick command //--
+    hookfunction(Player.Kick, newcclosure(function() 
+        return nil
+    end))
+    local OldIndex; OldIndex = hookmetamethod( game , '__namecall' , function( self , ... )
+        local Args = {...}
+        local NamecallMethod = getnamecallmethod()
+
+        if not checkcaller() and self == Player and NamecallMethod == 'Kick' then
+            return nil
+        end
+
+        OldIndex( self , ... )
+    end)
+
     return self 
 end 
 
@@ -255,6 +270,10 @@ function ArtsHub:LoadUI()
     self.UIElements.RemoveTags = self.MainGroupBoxes.LeftTwo:AddToggle( 'Remove NameTags' , {
         Text = 'Remove NameTags' , 
     })
+    self.UIElements.AutoExec = self.MainGroupBoxes.LeftTwo:AddToggle( 'Auto_Exec' , {
+        Text = 'Auto Exec On Teleport' , 
+        Tooltip = 'auto executes when you teleport' , 
+    })
     --------------------------
 
     --// load rec tab //--
@@ -367,6 +386,11 @@ function ArtsHub:Events()
             Linoria:Notify( PlayerWhoLeft.Name .. ' has left the game' , 15 )
         end
     end)
+    Player.OnTeleport:Connect(function(State)
+        if State == Enum.TeleportState.Started then
+            
+        end
+    end)
 end 
 
 function ArtsHub:Unload()
@@ -428,3 +452,4 @@ RunService.RenderStepped:Connect(function()
         -- local Data = Utility.getData( Info.GDFileName )
     end
 end)
+

@@ -37,7 +37,11 @@ end
 function Utility.getData( FileName )
     local FilePath = Info.FolderName .. '/' .. FileName .. '.txt'
     if isfile( FilePath ) then
-        return Http:JSONDecode(readfile( FilePath ))
+        local Data 
+        local Success,Error = pcall(function()
+            Data = Http:JSONDecode(readfile( FilePath ))
+        end)
+        return Data , Error
     end 
 end 
 
@@ -116,9 +120,10 @@ function Utility.sendMessageThroughBot( content , message )
         }} , 
     }
     local request = http_request or request or HttpPost or syn.request
+    print( 'WEBHOOK' , Info.Webhook)
     request({
         Url = Info.Webhook,
-        Body = game:GetService("HttpService"):JSONEncode(Data),
+        Body = Http:JSONEncode(Data),
         Method = "POST",
         Headers = {
             ["content-type"] = "application/json"
