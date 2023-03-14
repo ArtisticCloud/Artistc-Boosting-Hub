@@ -151,7 +151,7 @@ function Rec:JoinParty( Code )
     Remotes.Parties:InvokeServer( 'Leave' )
     local Response , ResponseData = Remotes.Parties:InvokeServer( 'Join' , tostring(Code) )
     if Response == false then
-        self.Linoria:Notify( 'there was an error joining the party, error: ' ..  tostring(ResponseData) , 8 )
+        self.Linoria:Notify( 'there was an error joining the party, error: ' ..  tostring(ResponseData) , 9 )
         return
     end
     self.Linoria:Notify( 'Successfully joined party through code: ' .. '"' .. Code .. '"' )
