@@ -30,8 +30,8 @@ function Rec.new( Hub , RecTab )
     self.AltParty = nil 
 
     --// reset party data //--
-    local GeneralData = Utility.getData( Info.GDFileName )
     if self.AccountType == 'Main' then
+        local GeneralData = Utility.getData( Info.GDFileName )
         self:GlobalLeaveParty()
         GeneralData.Rec.Parties.Main = nil 
         GeneralData.Rec.Parties.Alt = nil 
