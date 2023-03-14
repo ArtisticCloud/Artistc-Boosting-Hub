@@ -247,7 +247,7 @@ function Rec:Update()
         self.UIElements.AltPartyCode:SetText(  'Alt Party: ' .. AltPartyCode )
     end
     --// Auto start //--
-    if GeneralData and  self.UIElements.Auto_Start.Value and game.PlaceId == Info.Places.RecLobby then
+    if GeneralData and self.UIElements.Auto_Start and self.UIElements.Auto_Start.Value and game.PlaceId == Info.Places.RecLobby then
         local Party1 , Party2 = Storage.Parties:FindFirstChild( GeneralData.Rec.Parties.Main.Party ) , Storage.Parties:FindFirstChild( GeneralData.Rec.Parties.Alt.Party )
             --// check the sizes of them //--
         if Party1 and Party2 and #Party1.Players:GetChildren() >= 5 and #Party2.Players:GetChildren() >= 5 then
