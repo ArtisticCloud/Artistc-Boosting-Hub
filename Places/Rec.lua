@@ -125,7 +125,6 @@ end
 
 function Rec:createPartyCodes( OtherMain )
     local GeneralData = Utility.getData( Info.GDFileName )
-    print(  'is in party: ' .. self:IsInParty( OtherMain ) , self:IsInParty(Player.Name) )
     self:GlobalLeaveParty()
     if GeneralData and Remotes:FindFirstChild( 'Parties' ) then
         local Response , ResponseData = Remotes.Parties:InvokeServer( 'Start' )
@@ -198,7 +197,7 @@ function Rec:IsInParty( Name )
             return true
         end
     end
-    return true 
+    return false
 end
 
 function Rec:Update()
