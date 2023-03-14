@@ -398,7 +398,7 @@ elseif Data and AccountControlData and AccountControlData.Accounts[Player.Name] 
     print( "Art's Hub Debug: | Data found, registering hub" )
     getgenv().ArtsHub = ArtsHub.new( Data.Main )
 else
-    Linoria:Notify( 'You arent registered bro' )
+    Linoria:Notify( 'you arent registered bro' )
 end
 
 RunService.RenderStepped:Connect(function()
