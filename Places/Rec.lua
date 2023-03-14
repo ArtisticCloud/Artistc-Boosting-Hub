@@ -179,7 +179,7 @@ function Rec:AltEvents( AccountData , AccountControlData )
             Remotes.Parties:InvokeServer( 'Leave' )
         end
         AccountControlData.Accounts[Player.Name].LeaveParty = nil
-        Utility.saveData( Utility.ACFileName , AccountControlData )
+        Utility.saveData( Info.ACFileName , AccountControlData )
     end
     return true
 end
