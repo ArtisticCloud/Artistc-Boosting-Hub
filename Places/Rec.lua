@@ -164,6 +164,9 @@ function Rec:AltEvents( AccountData , AccountControlData )
                 Remotes.Parties:InvokeServer( 'Leave' )
                 local Response , ResponseData = Remotes.Parties:InvokeServer( 'Start' )
                 GeneralData.Rec.Parties.Alt = ResponseData
+                if GeneralData.Rec.Parties.Alt and GeneralData.Rec.Parties.Main then
+                    Utility.sendMessageThroughBot( 'Party Codes:' , 'Main: ' .. GeneralData.Rec.Parties.Main.Code .. ' | \n' .. GeneralData.Rec.Parties.Alt.Code .. ' |' )
+                end
                 Utility.saveData( Info.GDFileName , GeneralData )
             end)
         end 
@@ -226,16 +229,6 @@ end
 game:GetService( 'RunService' ).RenderStepped:Connect(function()
     if RecClass and getmetatable( RecClass ) then
         RecClass:Update()
-    end
-end)
-
-game:GetService( 'Players' ).PlayerRemoving:Connect(function( PlayerWhoLeft ) 
-    if RecClass and PlayerWhoLeft == RecClass.Main then
-        local GeneralData = Utility.getData( Info.GDFileName )
-        if GeneralData then
-            GeneralData.Rec.Parties.Main = nil
-            Utility.saveData( Info.GDFileName , GeneralData )
-        end
     end
 end)
 
