@@ -80,13 +80,24 @@ function Rec:LoadUI()
             end
         end)
         self.LobbyGroupBox:AddDivider()
-        self.UIElements.PartyCodeInput = self.LobbyGroupBox:AddDropdown( 'Party_Type' , {
+        self.LobbyGroupBox:AddDropdown( 'Party_Type' , {
             Values = {'Main','Alt'} , 
             Text = 'Party Type' , 
         })
         self.UIElements.InviteAlts = self.LobbyGroupBox:AddButton( 'Invite Alts' , function()
+            local Party = GeneralData.Rec.Parties[Options.Party_Type.Value]
             local AccountControlData = Utility.getData( Info.ACFileName )
-            
+            if AccountControlData and Party then
+                for Account,AccountData in pairs(AccountControlData.Accounts) do
+                    if AccountData.Online and game.Players:FindFirstChild( Account ) then
+                        AccountControlData.Accounts[Account].JoinParty = Party
+                    end
+                end
+                Utility.saveData( Info.ACFileName , AccountControlData )
+            else
+                self.Linoria:Notify( 'There is no' .. Options.Party_Type.Value ..  'party' , 7.5 )
+            end
+            return true
         end)
     end
     --// rec q //--
@@ -119,14 +130,6 @@ function Rec:GlobalLeaveParty()
 end
 
 function Rec:Events()
-    if self.UIElements.Other_Main then
-        self.UIElements.Other_Main:OnChanged(function()
-            local AccountData = Utility.isValidAlt( self.UIElements.Other_Main.Value )
-            if AccountData then
-                -- self:SetPartyCodes()
-            end
-        end)
-    end
     self.UIElements.Remove_Out_Of_Bounds:OnChanged(function()
         local Collection = game:GetService( 'CollectionService' )
         for _,Part in pairs(Collection:GetTagged("OutOfBounds")) do
@@ -187,9 +190,9 @@ function Rec:AltEvents( AccountData , AccountControlData )
         end 
         Utility.saveData( Info.ACFileName , AccountControlData )
     end
-    if AccountData.PartyToJoin then
-        local Response = self:JoinParty( AccountData.PartyToJoin )
-        AccountControlData.Accounts[Player.Name].PartyToJoin = nil 
+    if AccountData.JoinParty then
+        local Response = self:JoinParty( AccountData.JoinParty.Code )
+        AccountControlData.Accounts[Player.Name].JoinParty = nil 
         Utility.saveData( Info.ACFileName , AccountControlData )
     end
     if AccountData.LeaveParty then
@@ -244,7 +247,7 @@ function Rec:Update()
         self.UIElements.AltPartyCode:SetText(  'Alt Party: ' .. AltPartyCode )
     end
     --// Auto start //--
-    if GeneralData and Options.Auto_Start.Value and game.PlaceId == Info.Places.RecLobby then
+    if GeneralData and  self.UIElements.Auto_Start.Value and game.PlaceId == Info.Places.RecLobby then
         local Party1 , Party2 = Storage.Parties:FindFirstChild( GeneralData.Rec.Parties.Main.Party ) , Storage.Parties:FindFirstChild( GeneralData.Rec.Parties.Alt.Party )
             --// check the sizes of them //--
         if Party1 and Party2 and #Party1.Players:GetChildren() >= 5 and #Party2.Players:GetChildren() >= 5 then
@@ -264,6 +267,14 @@ end
 game:GetService( 'RunService' ).RenderStepped:Connect(function()
     if RecClass and getmetatable( RecClass ) then
         RecClass:Update()
+    end
+end)
+
+game.Players.LocalPlayer.Destroying:Connect(function()
+    local AccountControl = Utility.getData( Info.ACFileName )
+    if AccountControl then
+        AccountControl.Accounts[Player.Name].Online = false 
+        Utility.saveData( Info.ACFileName , AccountControl )
     end
 end)
 
