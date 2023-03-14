@@ -97,7 +97,7 @@ function Rec:LoadUI()
         end
     end)
     self.MatchGroupBox = self.RecTab:AddRightGroupbox( 'Rec. Match' )
-    self.MatchGroupBox:AddToggle( 'Remove_Out_Of_Bounds' , {
+    self.UIElements.Remove_Out_Of_Bounds = self.MatchGroupBox:AddToggle( 'Remove_Out_Of_Bounds' , {
         Text = 'Remove Out Of Bounds' 
     })
 
@@ -127,7 +127,7 @@ function Rec:Events()
             end
         end)
     end
-    Options.Remove_Out_Of_Bounds:OnChanged(function()
+    self.UIElements.Remove_Out_Of_Bounds:OnChanged(function()
         local Collection = game:GetService( 'CollectionService' )
         for _,Part in pairs(Collection:GetTagged("OutOfBounds")) do
             Part.Parent = (Options.Remove_Out_Of_Bounds.Value and Storage) or (workspace)
