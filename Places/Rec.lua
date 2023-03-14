@@ -32,6 +32,7 @@ function Rec.new( Hub , RecTab )
     --// reset party data //--
     local GeneralData = Utility.getData( Info.GDFileName )
     if self.AccountType == 'Main' then
+        self:GlobalLeaveParty()
         GeneralData.Rec.Parties.Main = nil 
         GeneralData.Rec.Parties.Alt = nil 
         Utility.saveData( Info.GDFileName , GeneralData )
@@ -94,6 +95,17 @@ function Rec:LoadUI()
         end)
     end
     return true 
+end
+
+function Rec:GlobalLeaveParty()
+    local AccountControl = Utility.getData( Info.ACFileName )
+    if AccountControl then
+        for Account,Data in pairs(AccountControl) do
+            AccountControl.Accounts[Account].LeaveParty = true
+        end
+        Utility.saveData( Info.ACFileName , AccountControl )
+    end
+    return true
 end
 
 function Rec:Events()
@@ -160,6 +172,13 @@ function Rec:AltEvents( AccountData , AccountControlData )
         local Response = self:JoinParty( AccountData.PartyToJoin )
         AccountControlData.Accounts[Player.Name].PartyToJoin = nil 
         Utility.saveData( Info.ACFileName , AccountControlData )
+    end
+    if AccountData.LeaveParty then
+        if Remotes:FindFirstChild( 'Parties' ) then
+            Remotes.Parties:InvokeServer( 'Leave' )
+        end
+        AccountControlData.Accounts[Player.Name].LeaveParty = nil
+        Utility.saveData( Utility.ACFileName , AccountControlData )
     end
     return true
 end
