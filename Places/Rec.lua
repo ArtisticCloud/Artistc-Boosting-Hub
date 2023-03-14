@@ -85,20 +85,8 @@ function Rec:LoadUI()
             Placeholder = 'Code..' , 
         })
         self.UIElements.InviteAlts = self.LobbyGroupBox:AddButton( 'Invite Alts' , function()
-            local Accounts = Utility.getData( Info.ACFileName )
-            if Accounts then 
-                --// Make all the alts join the alt party //--
-                for AccountName , AccountData in pairs(Accounts.Accounts) do
-                    if not game.Players:FindFirstChild( AccountName ) then
-                        self.Linoria:Notify( AccountName .. ' is not in your server' , 9 )
-                    elseif game.Players:FindFirstChild( AccountName ) and AccountName ~= self.Main and self.AltParty and not Accounts.Accounts[AccountName].PartyToJoin then
-                        --// Join an alt party //--
-                        Accounts.Accounts[AccountName].PartyToJoin = self.AltParty
-                    end
-                    Utility.saveData( Info.ACFileName , Accounts )
-                end
-                return true 
-            end 
+            local AccountControlData = Utility.getData( Info.ACFileName )
+            
         end)
     end
     --// rec q //--
