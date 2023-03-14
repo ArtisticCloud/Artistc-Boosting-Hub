@@ -29,15 +29,6 @@ function Rec.new( Hub , RecTab )
     self.MainParty = nil 
     self.AltParty = nil 
 
-    --// reset party data //--
-    if self.AccountType == 'Main' then
-        local GeneralData = Utility.getData( Info.GDFileName )
-        self:GlobalLeaveParty()
-        GeneralData.Rec.Parties.Main = nil 
-        GeneralData.Rec.Parties.Alt = nil 
-        Utility.saveData( Info.GDFileName , GeneralData )
-    end
-
     self:LoadUI()
     self:Events()
 
@@ -48,6 +39,13 @@ end
 
 function Rec:LoadUI()
     if self.AccountType == 'Main' then
+        --// reset party data //--
+        local GeneralData = Utility.getData( Info.GDFileName )
+        self:GlobalLeaveParty()
+        GeneralData.Rec.Parties.Main = nil 
+        GeneralData.Rec.Parties.Alt = nil 
+        Utility.saveData( Info.GDFileName , GeneralData )
+
         self.LobbyGroupBox = self.RecTab:AddLeftGroupbox( 'Rec. Lobby' )
         self.UIElements.RecBoosting = self.LobbyGroupBox:AddToggle( 'Rec_Boosting' , {
             Text = 'Rec Boosting' , 
