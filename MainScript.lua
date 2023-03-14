@@ -231,6 +231,19 @@ function ArtsHub:LoadUI()
         Max = 1.24 , 
         Rounding = 2 , 
     })
+    self.MainGroupBoxes.RightTwo:AddDivider()
+    self.UIElements.Glide = self.MainGroupBoxes.RightTwo:AddToggle( 'Glide' , {
+        Text = 'Glide' , 
+        Tooltip = 'glides your character when you move'
+    })
+    self.UIElements.GlideSlider = self.MainGroupBoxes.RightTwo:AddSlider( 'Glide Slider' , {
+        Text = 'Glide Strength' , 
+        Default = 0.3,
+        Min = 0.01 ,
+        Max = 0.6 , 
+        Rounding = 3 , 
+    })
+
     --------------------
     --// Join logs //--
     self.UIElements.JoinLogs = self.MainGroupBoxes.LeftTwo:AddToggle( 'Join Logs' , {
@@ -386,6 +399,12 @@ end
 function ArtsHub:Update()
     --// reset the mouse icon //--
     UIS.MouseIconEnabled = true
+    local Character = Player.Character 
+    local Root = Character and Character:FindFirstChild( 'HumanoidRootPart' )
+    local Humanoid = Character and Character:FindFirstChild( 'Humanoid' )
+    if Root and self.UIElements.Glide.Value then
+        Root.CFrame = Root.CFrame:Lerp( Root.CFrame * CFrame.new(Root.CFrame:VectorToObjectSpace( Humanoid.MoveDirection ) * self.UIElements.GlideSlider.Value) , 0.05 )
+    end
 end
 
 --// Check is there is any data under the player //--
