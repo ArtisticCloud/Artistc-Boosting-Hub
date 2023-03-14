@@ -161,7 +161,7 @@ function Rec:createPartyCodes( OtherMain )
             Utility.saveData( Info.GDFileName , GeneralData ) 
             self.Linoria:Notify( 'Successfully created main party. Code: ' .. tostring(ResponseData.Code) )
         else
-            self.Linoria:Notify( 'Could not start the main party. Error: ' .. tostring(ResponseData.Code) , 8 )
+            self.Linoria:Notify( 'Could not start the main party. Error: ' .. tostring(ResponseData.Code) , 9 )
             return
         end
     elseif not Remotes:FindFirstChild( 'Parties' ) then
