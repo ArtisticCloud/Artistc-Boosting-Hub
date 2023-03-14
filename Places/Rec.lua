@@ -65,8 +65,8 @@ function Rec:LoadUI()
         self.UIElements.MainPartyCode = self.LobbyGroupBox:AddLabel( 'Main Party: None' )
         self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
         self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
-            if tick() - self.LastPartyCreation < 3 then
-                self.Linoria:Notify( 'Please wait ' .. math.round( (3 - (tick() - self.LastPartyCreation)) * 1000 ) * 1000)
+            if tick() - self.LastPartyCreation < 6 then
+                self.Linoria:Notify( 'Please wait ' .. (6 - (tick() - self.LastPartyCreation)) .. ' seconds')
                 return
             end
             local OtherMain = Options.Account_Dropdown.Value and Utility.isValidAlt( Options.Account_Dropdown.Value )
@@ -133,6 +133,9 @@ function Rec:Events()
     self.UIElements.Remove_Out_Of_Bounds:OnChanged(function()
         local Collection = game:GetService( 'CollectionService' )
         for _,Part in pairs(Collection:GetTagged("OutOfBounds")) do
+            for _,Connection in pairs(getconnections(oob.Changed)) do
+                Connection:Disable()
+            end
             Part.Parent = (self.UIElements.Remove_Out_Of_Bounds.Value and Storage) or (workspace)
         end 
     end)
@@ -227,7 +230,7 @@ end
 function Rec:Update()
     local AccountControlData = Utility.getData( Info.ACFileName )
     local GeneralData = Utility.getData( Info.GDFileName )
-    if self.AccountType == 'Main' then
+    if self.AccountType == 'Main' and Options.Account_Dropdown then
         --// only update account dropdown if main //--
         Options.Account_Dropdown:SetValue( self.RegisteredAlts or {} ) 
     end
