@@ -156,7 +156,7 @@ function Rec:createPartyCodes( OtherMain )
             return
         end
     elseif not Remotes:FindFirstChild( 'Parties' ) then
-        self.Linoria:Notify( 'bro your not even in rec' , 8.5  )
+        self.Linoria:Notify( 'bro your not even in rec' , 9  )
     end
 end     
 
