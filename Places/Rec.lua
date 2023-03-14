@@ -99,6 +99,9 @@ end
 
 function Rec:GlobalLeaveParty()
     local AccountControl = Utility.getData( Info.ACFileName )
+    if self.AccountType == 'Main' and Remotes:FindFirstChild( 'Parties' ) then
+        Remotes.Parties:InvokeServer( 'Leave' )
+    end
     if AccountControl then
         for Account,Data in pairs(AccountControl.Accounts) do
             AccountControl.Accounts[Account].LeaveParty = true
