@@ -66,7 +66,7 @@ function Rec:LoadUI()
         self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
         self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
             if tick() - self.LastPartyCreation < 3 then
-                self.Linoria:Notify( 'Please wait ' .. math.round( (3 - (tick() - self.LastPartyCreation))) * 1000 ) * 1000
+                self.Linoria:Notify( 'Please wait ' .. math.round( (3 - (tick() - self.LastPartyCreation)) * 1000 ) * 1000)
                 return
             end
             local OtherMain = Options.Account_Dropdown.Value and Utility.isValidAlt( Options.Account_Dropdown.Value )
@@ -80,9 +80,9 @@ function Rec:LoadUI()
             end
         end)
         self.LobbyGroupBox:AddDivider()
-        self.UIElements.PartyCodeInput = self.LobbyGroupBox:AddInput( 'Party Code' , {
-            Text = 'Party Code' , 
-            Placeholder = 'Code..' , 
+        self.UIElements.PartyCodeInput = self.LobbyGroupBox:AddDropdown( 'Party_Type' , {
+            Values = {'Main','Alt'} , 
+            Text = 'Party Type' , 
         })
         self.UIElements.InviteAlts = self.LobbyGroupBox:AddButton( 'Invite Alts' , function()
             local AccountControlData = Utility.getData( Info.ACFileName )
