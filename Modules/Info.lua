@@ -41,8 +41,7 @@ Info.ACAccountData = {
     Teleporting = '' , 
     CurrentPlace = '' , 
     CurrentTasks = {OnBall='',OffBall=''} ,
-    TaskData = {OnBall={},OffBall={}} , 
-    CreatingCode = false , 
+    TaskData = {OnBall={},OffBall={}} ,  
     Rec = {PartyToJoin=nil}
 }
 
@@ -83,6 +82,6 @@ Info.DefaultKeybind = 'LeftCtrl'
 
 --// Misc. //--
 Info.Webhook = 'https://discord.com/api/webhooks/871572072780926977/4RVbwy2CeVQPwFZV3t4NEF43wealOfeMRBbWCVIpS6zZH4zNeoFQrZ_SoEJionygX1lb'
-
+Info.BotUsername = 'Rec Boosting Bot'
 
 return Info
