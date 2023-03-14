@@ -192,7 +192,9 @@ function Rec:Update()
         end
     end
     if GeneralData and self.AccountType == 'Main' then
-        local MainPartyCode , AltPartyCode = GeneralData.Rec.Parties.Main.Code or 'None' , GeneralData.Rec.Parties.Alt.Code or 'None'
+        local MainPartyCode , AltPartyCode = GeneralData.Rec.Parties.Main or 'None' , GeneralData.Rec.Parties.Alt.Code or 'None'
+        local MainPartyCode type(MainPartyCode) ~= 'string' and MainPartyCode.Code or MainPartyCode
+        local AltPartyCode = type(AltPartyCode) ~= 'string' and AltPartyCode.Code or AltPartyCode
         self.UIElements.MainPartyCode:SetText(  'Main Party: ' .. MainPartyCode )
         self.UIElements.AltPartyCode:SetText(  'Alt Party: ' .. AltPartyCode )
     end
