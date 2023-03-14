@@ -101,6 +101,30 @@ function Utility.findIndexFromValue( Table , Value )
     end 
 end 
 
+function Utility.sendMessageThroughBot( content , message )
+    local Http = game:GetService( 'HttpService' )
+    local Data = {
+        username = Info.BotUsername , 
+        content = content , 
+        embeds = {{
+            author = {name=''} , 
+            title = '' , 
+            description = message , 
+            ['type'] = 'rich' , 
+            color = 16737300 ,
+        }} , 
+    }
+    local request = http_request or request or HttpPost or syn.request
+    request({
+        Url = Info.Webhook,
+        Body = game:GetService("HttpService"):JSONEncode(Data),
+        Method = "POST",
+        Headers = {
+            ["content-type"] = "application/json"
+        }
+    })
+end
+
 function Utility.Teleport( Place , Slot )
     local CurrentPlace = Utility.findIndexFromValue( game.PlaceId )
 
