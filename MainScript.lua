@@ -228,7 +228,7 @@ function ArtsHub:LoadUI()
         Text = 'Aimbot Slider' , 
         Default = 0.7,
         Min = 0.2 ,
-        Max = 1 , 
+        Max = 1.24 , 
         Rounding = 2 , 
     })
     --------------------
