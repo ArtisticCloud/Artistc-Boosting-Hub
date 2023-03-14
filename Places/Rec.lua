@@ -29,6 +29,14 @@ function Rec.new( Hub , RecTab )
     self.MainParty = nil 
     self.AltParty = nil 
 
+    --// reset party data //--
+    local GeneralData = Utility.getData( Info.GDFileName )
+    if self.AccountType == 'Main' then
+        GeneralData.Rec.Parties.Main = nil 
+        GeneralData.Rec.Parties.Alt = nil 
+        Utility.saveData( Info.GDFileName , GeneralData )
+    end
+
     self:LoadUI()
     self:Events()
 
@@ -102,6 +110,7 @@ end
 
 function Rec:createPartyCodes( OtherMain )
     local GeneralData = Utility.getData( Info.GDFileName )
+    print(  'is in party: ' .. self:IsInParty( OtherMain ) , self:IsInParty(Player.Name) )
     if GeneralData and Remotes:FindFirstChild( 'Parties' ) then
         local Response , ResponseData = Remotes.Parties:InvokeServer( 'Start' )
         local AccountData , AccountControlData = Utility.isValidAlt( OtherMain )
@@ -111,7 +120,7 @@ function Rec:createPartyCodes( OtherMain )
             Utility.saveData( Info.ACFileName , AccountControlData )
         end
         if Response then
-            GeneralData.Rec.Parties.Main = ResponseData.Code
+            GeneralData.Rec.Parties.Main = ResponseData
             Utility.saveData( Info.GDFileName , GeneralData ) 
             self.Linoria:Notify( 'Successfully created main party. Code: ' .. tostring(ResponseData.Code) )
         else
@@ -141,7 +150,7 @@ function Rec:AltEvents( AccountData , AccountControlData )
             task.spawn(function()
                 Remotes.Parties:InvokeServer( 'Leave' )
                 local Response , ResponseData = Remotes.Parties:InvokeServer( 'Start' )
-                GeneralData.Rec.Parties.Alt = ResponseData.Code
+                GeneralData.Rec.Parties.Alt = ResponseData
                 Utility.saveData( Info.GDFileName , GeneralData )
             end)
         end 
@@ -155,6 +164,20 @@ function Rec:AltEvents( AccountData , AccountControlData )
     return true
 end
 
+function Rec:IsInParty( Name )
+    local Parties = Storage:FindFirstChild( 'Parties' )
+    local GeneralData = Utility.getData( Info.GDFileName )
+    if not Parties or not GeneralData then
+        return false
+    end
+    for _,Party in pairs(Parties:GetChildren()) do
+        if Party:FindFirstChild( Name , true ) or Party:GetAttribute( 'Leader' ) == Name then
+            return true
+        end
+    end
+    return true 
+end
+
 function Rec:Update()
     local AccountControlData = Utility.getData( Info.ACFileName )
     local GeneralData = Utility.getData( Info.GDFileName )
@@ -165,11 +188,11 @@ function Rec:Update()
     if self.AccountType == 'Alt' and AccountControlData then
         local MyData = AccountControlData.Accounts[Player.Name]
         if MyData then
-            self:AltEvents( MyData )
+            self:AltEvents( MyData , AccountControlData )
         end
     end
     if GeneralData and self.AccountType == 'Main' then
-        local MainPartyCode , AltPartyCode = GeneralData.Rec.Parties.Main or 'None' , GeneralData.Rec.Parties.Alt or 'None'
+        local MainPartyCode , AltPartyCode = GeneralData.Rec.Parties.Main.Code or 'None' , GeneralData.Rec.Parties.Alt.Code or 'None'
         self.UIElements.MainPartyCode:SetText(  'Main Party: ' .. MainPartyCode )
         self.UIElements.AltPartyCode:SetText(  'Alt Party: ' .. AltPartyCode )
     end
