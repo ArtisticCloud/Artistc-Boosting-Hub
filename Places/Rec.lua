@@ -28,6 +28,7 @@ function Rec.new( Hub , RecTab )
 
     self.MainParty = nil 
     self.AltParty = nil 
+    self.LastPartyCreation = tick()
 
     self:LoadUI()
     self:Events()
@@ -47,6 +48,7 @@ function Rec:LoadUI()
         Utility.saveData( Info.GDFileName , GeneralData )
 
         self.LobbyGroupBox = self.RecTab:AddLeftGroupbox( 'Rec. Lobby' )
+        self.LobbyGroupBox:AddDivider()
         self.UIElements.RecBoosting = self.LobbyGroupBox:AddToggle( 'Rec_Boosting' , {
             Text = 'Rec Boosting' , 
             Tooltip = 'doesnt do anything yet'
@@ -55,6 +57,7 @@ function Rec:LoadUI()
             Text = 'Auto Start' , 
             Tooltip = 'Automatically starts when both parties are full'
         })
+        self.LobbyGroupBox:AddDivider()
         self.LobbyGroupBox:AddDropdown( 'Account_Dropdown' , {
             Values = self.RegisteredAlts , 
             Text = 'Other Main' , 
@@ -62,8 +65,13 @@ function Rec:LoadUI()
         self.UIElements.MainPartyCode = self.LobbyGroupBox:AddLabel( 'Main Party: None' )
         self.UIElements.AltPartyCode = self.LobbyGroupBox:AddLabel( 'Alt Party: None' )
         self.UIElements.CreateParty = self.LobbyGroupBox:AddButton( 'Create Parties' , function()
+            if tick() - self.LastPartyCreation < 3 then
+                self.Linoria:Notify( 'Please wait ' .. math.round( (3 - (tick() - self.LastPartyCreation))) * 1000 ) * 1000
+                return
+            end
             local OtherMain = Options.Account_Dropdown.Value and Utility.isValidAlt( Options.Account_Dropdown.Value )
             if OtherMain and game.Players:FindFirstChild( Options.Account_Dropdown.Value ) then
+                self.LastPartyCreation = tick()
                 local Response = self:createPartyCodes( Options.Account_Dropdown.Value )
             elseif not OtherMain or not game.Players:FindFirstChild( Options.Account_Dropdown.Value ) then
                 self.Linoria:Notify( 'Invalid Main' , 8 )
@@ -71,6 +79,7 @@ function Rec:LoadUI()
                 self.Linoria:Notify( 'Other main isnt in your server' )
             end
         end)
+        self.LobbyGroupBox:AddDivider()
         self.UIElements.PartyCodeInput = self.LobbyGroupBox:AddInput( 'Party Code' , {
             Text = 'Party Code' , 
             Placeholder = 'Code..' , 
@@ -92,6 +101,18 @@ function Rec:LoadUI()
             end 
         end)
     end
+    --// rec q //--
+    self.QGroupBox = self.RecTab:AddLeftGroupbox( 'Rec. Queue' )
+    self.QGroupBox:AddButton( 'Back to Lobby' , function() 
+        if self.AccountType == 'Main' and game.PlaceId == Info.Places.RecQ and Options.Rec_Boosting.Value then
+            Remotes.Teleport:InvokeServer( 'Rec Lobby' )
+        end
+    end)
+    self.MatchGroupBox = self.RecTab:AddRightGroupbox( 'Rec. Match' )
+    self.MatchGroupBox:AddToggle( 'Remove_Out_Of_Bounds' , {
+        Text = 'Remove Out Of Bounds' 
+    })
+
     return true 
 end
 
@@ -118,6 +139,12 @@ function Rec:Events()
             end
         end)
     end
+    Options.Remove_Out_Of_Bounds:OnChanged(function()
+        local Collection = game:GetService( 'CollectionService' )
+        for _,Part in pairs(Collection:GetTagged("OutOfBounds")) do
+            Part.Parent = (Options.Remove_Out_Of_Bounds.Value and Storage) or (workspace)
+        end 
+    end)
     return true
 end
 
@@ -184,6 +211,11 @@ function Rec:AltEvents( AccountData , AccountControlData )
         AccountControlData.Accounts[Player.Name].LeaveParty = nil
         Utility.saveData( Info.ACFileName , AccountControlData )
     end
+    if AccountData.BeginMatch then 
+        Remotes.Teleport:InvokeServer( 'Ranked Queue' )
+        AccountControlData.Accounts[Player.Name].BeginMatch = nil
+        Utility.saveData( Info.ACFileName , AccountControlData )
+    end
     return true
 end
 
@@ -222,6 +254,21 @@ function Rec:Update()
 
         self.UIElements.MainPartyCode:SetText(  'Main Party: ' .. MainPartyCode )
         self.UIElements.AltPartyCode:SetText(  'Alt Party: ' .. AltPartyCode )
+    end
+    --// Auto start //--
+    if GeneralData and Options.Auto_Start.Value and game.PlaceId == Info.Places.RecLobby then
+        local Party1 , Party2 = Storage.Parties:FindFirstChild( GeneralData.Rec.Parties.Main.Party ) , Storage.Parties:FindFirstChild( GeneralData.Rec.Parties.Alt.Party )
+            --// check the sizes of them //--
+        if Party1 and Party2 and #Party1.Players:GetChildren() >= 5 and #Party2.Players:GetChildren() >= 5 then
+            Remotes.Teleport:InvokeServer( 'Ranked Queue' )
+            local AccountControlData = Utility.getData( Info.ACFileName )
+            --// find other main from accountdata through party leader attribute //--
+            local OtherMain = AccountControlData and AccountControlData.Accounts[Party2:GetAttribute( 'Leader' )] or AccountControlData and AccountControlData.Accounts[Party1:GetAttribute( 'Leader' )]
+            if OtherMain then
+                AccountControlData.Accounts[ OtherMain ].BeginMatch = true
+                AccountData.saveData( Info.ACFileName , AccountControlData )
+            end
+        end
     end
     return true 
 end
