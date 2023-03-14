@@ -133,7 +133,7 @@ function Rec:Events()
     self.UIElements.Remove_Out_Of_Bounds:OnChanged(function()
         local Collection = game:GetService( 'CollectionService' )
         for _,Part in pairs(Collection:GetTagged("OutOfBounds")) do
-            Part.Parent = (Options.Remove_Out_Of_Bounds.Value and Storage) or (workspace)
+            Part.Parent = (self.UIElements.Remove_Out_Of_Bounds.Value and Storage) or (workspace)
         end 
     end)
     return true
