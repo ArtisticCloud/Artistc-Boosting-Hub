@@ -138,14 +138,18 @@ function Utility.Teleport( Place , Slot )
         Remotes.Teleport:InvokeServer( Place )
     end
 
+    if CurrentPlace == 'Main Menu' then
+        Remotes.Teleport:InvokeServer( 'Plaza' )
+        return 
+    end
     if Place == 'RecLobby' or Place == 'Park' or Place == 'Gym' then
-        if CurrentPlace == 'MainMenu' then
+        if CurrentPlace == 'Main Menu' then
             
         else
             Remotes.Teleport:InvokeServer( '' )
         end
     elseif Place == 'Plaza' then
-
+        Remotes.Teleport:InvokeServer( 'Plaza' )
     end
 end
 
