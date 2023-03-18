@@ -32,12 +32,6 @@ Linoria:OnUnload(function()
     Linoria.Unloaded = true
 end)
 
-local VirtualUser = game:GetService('VirtualUser')
-Player.Idled:Connect(function()
-    VirtualUser:CaptureController() 
-    VirtualUser:ClickButton2(Vector2.new()) 
-end)
-
 local ArtsHub = {}
 
 function ArtsHub.new( Main )
@@ -86,6 +80,12 @@ end
 function ArtsHub:LoadData()
     local Data = Utility.getData( Info.GDFileName )
     local AccountControlData = Utility.getData( Info.ACFileName )
+        --// Anti afk
+    local VirtualUser = game:GetService('VirtualUser')
+    Player.Idled:Connect(function()
+        VirtualUser:CaptureController() 
+        VirtualUser:ClickButton2(Vector2.new()) 
+    end)
     if Data then
 
     end
