@@ -50,7 +50,7 @@ Info.Places = {
     Park = 10107441386 , 
     RecLobby = 10207014047,
     Plaza = 8448881160 ,
-    MainMenu = 7899881670,
+    ['Main Menu'] = 7899881670,
     RecQ = 10217709305 , 
     RecGame = 10240522770 ,
 }
