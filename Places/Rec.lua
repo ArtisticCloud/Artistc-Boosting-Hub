@@ -223,7 +223,7 @@ function Rec:IsInParty( Name )
         return false
     end
     for _,Party in pairs(Parties:GetChildren()) do
-        if Party:FindFirstChild( Name , true ) or Party:GetAttribute( 'Leader' ) == Name then
+        if Party:FindFirstChild( Name , true ) or Party:GetAttribute( 'Leader' ):lower() == Name:lower() then
             return true
         end
     end

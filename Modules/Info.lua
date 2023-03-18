@@ -52,7 +52,7 @@ Info.Places = {
     Plaza = 8448881160 ,
     MainMenu = 7899881670,
     RecQ = 10217709305 , 
-    RecGame = 0 ,
+    RecGame = 10240522770 ,
 }
 
 Info.CommandTypes = {
